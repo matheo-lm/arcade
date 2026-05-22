@@ -8,6 +8,7 @@ import { platformStorage } from "@shared/storage/platformStorage";
 import { applyTheme, watchSystemTheme, type ThemePreference } from "@shared/ui/theme";
 import { bindSettingsMenuEvents, renderSettingsMenu, type SettingsMenuConfig } from "@shared/ui/settingsMenu";
 import type { AgeBand, GameManifest, SkillTag } from "@shared/types/game";
+import { badgeDefinitions } from "@shared/badges/badgeDefs";
 
 const app = document.getElementById("app");
 if (!app) throw new Error("Launcher root #app is missing");
@@ -18,6 +19,7 @@ const avatarRotation = ["berry", "rocket", "leaf", "sun"];
 let selectedAge: AgeBand | "" = "";
 let selectedSkill: SkillTag | "" = "";
 let settingsMenuOpen = false;
+let badgesModalOpen = false;
 let themePreference: ThemePreference = platformStorage.getThemePreference();
 let stopThemeWatch: (() => void) | null = null;
 let cleanupSettingsMenu: (() => void) | null = null;
@@ -159,6 +161,24 @@ const render = (): void => {
   const active = getActiveProfile();
   if (!active) return;
 
+  // -- Dynamic Auto-Unlock Badge Checks --
+  // 1. Explorer (first-steps)
+  platformStorage.unlockBadge(active.id, "first-steps");
+
+  // 2. Star Collector (star-collector)
+  const starCheckGames = filterGames({ locale: i18n.locale });
+  const starCheckTotalStars = starCheckGames.reduce((sum, game) => {
+    return sum + platformStorage.getGameProgress(active.id, game.id).stars;
+  }, 0);
+  if (starCheckTotalStars >= 3) {
+    platformStorage.unlockBadge(active.id, "star-collector");
+  }
+
+  // 3. Night Owl (night-owl)
+  if (themePreference === "dark") {
+    platformStorage.unlockBadge(active.id, "night-owl");
+  }
+
   const games = filterGames({
     ageBand: selectedAge || undefined,
     skillTag: selectedSkill || undefined,
@@ -182,7 +202,7 @@ const render = (): void => {
               <img src="/assets/ui/stat-stars.svg" alt="" aria-hidden="true" />
               <strong>${totalStars}</strong>
             </span>
-            <span class="stat-chip" title="${i18n.t("statsBadgesTooltip")}: ${totalBadges}" aria-label="${i18n.t("statsBadgesTooltip")}: ${totalBadges}">
+            <span id="badgesStatChip" class="stat-chip interactive-chip" role="button" tabindex="0" title="${i18n.t("statsBadgesTooltip")}: ${totalBadges}" aria-label="${i18n.t("statsBadgesTooltip")}: ${totalBadges}">
               <img src="/assets/ui/stat-badges.svg" alt="" aria-hidden="true" />
               <strong>${totalBadges}</strong>
             </span>
@@ -265,6 +285,65 @@ const render = (): void => {
     </footer>
   `;
 
+  // -- Stateful modal rendering --
+  let badgesModalMarkup = "";
+  if (badgesModalOpen) {
+    const unlockedBadges = platformStorage.listBadges(active.id);
+
+    const gridItems = badgeDefinitions
+      .map((badge) => {
+        const unlocked = !!unlockedBadges[badge.id]?.unlocked;
+        const unlockedAt = unlockedBadges[badge.id]?.unlockedAt;
+        const formattedDate = unlockedAt
+          ? new Date(unlockedAt).toLocaleDateString(i18n.locale, { month: "short", day: "numeric", year: "numeric" })
+          : "";
+
+        return `
+          <div class="badge-card ${unlocked ? "unlocked" : "locked"}" tabindex="0">
+            <div class="badge-icon-wrap" aria-hidden="true">
+              ${badge.iconSvg}
+              ${
+                unlocked
+                  ? ""
+                  : `<div class="badge-lock"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg></div>`
+              }
+            </div>
+            <div class="badge-info">
+              <h3>${badge.title[i18n.locale]}</h3>
+              <p class="badge-desc">${badge.description[i18n.locale]}</p>
+              ${
+                unlocked
+                  ? `<span class="badge-status unlocked-status">${i18n.t("badgeUnlocked")} ${formattedDate}</span>`
+                  : `<span class="badge-status locked-status">${i18n.t("badgeLocked")}: <span class="badge-hint-text">${badge.hint[i18n.locale]}</span></span>`
+              }
+            </div>
+          </div>
+        `;
+      })
+      .join("");
+
+    badgesModalMarkup = `
+      <div class="badges-modal-overlay" id="badgesModalOverlay">
+        <div class="panel badges-modal" id="badgesModalContent" role="dialog" aria-labelledby="badgesModalTitle" aria-describedby="badgesModalDesc">
+          <div class="badges-modal-header">
+            <div class="badges-modal-header-text">
+              <h2 id="badgesModalTitle">${i18n.t("badgesModalTitle")}</h2>
+              <p id="badgesModalDesc" class="badges-modal-sub">${i18n.t("badgesModalSub")}</p>
+            </div>
+            <button class="button close-modal-btn" id="closeBadgesModalBtn" type="button" aria-label="Close modal">×</button>
+          </div>
+          <div class="badges-grid-container">
+            <div class="badges-grid">
+               ${gridItems}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  app.innerHTML = app.innerHTML + badgesModalMarkup;
+
   const settingsMenuMount = document.getElementById("settingsMenuMount") as HTMLElement | null;
   const settingsConfig: SettingsMenuConfig = {
     idPrefix: "launcher",
@@ -303,6 +382,10 @@ const render = (): void => {
         render();
       },
       onLocaleChange(locale) {
+        const activeProfile = getActiveProfile();
+        if (activeProfile) {
+          platformStorage.unlockBadge(activeProfile.id, "bilingual-buddy");
+        }
         i18n.setLocale(locale);
         render();
       },
@@ -321,6 +404,46 @@ const render = (): void => {
   }
 
   wireImageFallbacks(app);
+
+  // -- Stateful Badges Modal Event Wiring --
+  const badgesChip = document.getElementById("badgesStatChip");
+  badgesChip?.addEventListener("click", () => {
+    unlockAudioContext();
+    playUiClick();
+    badgesModalOpen = true;
+    render();
+  });
+
+  if (badgesModalOpen) {
+    const closeBtn = document.getElementById("closeBadgesModalBtn");
+    closeBtn?.addEventListener("click", () => {
+      unlockAudioContext();
+      playUiClick();
+      badgesModalOpen = false;
+      render();
+    });
+
+    const overlay = document.getElementById("badgesModalOverlay");
+    overlay?.addEventListener("click", (e) => {
+      if (e.target === overlay) {
+        unlockAudioContext();
+        playUiClick();
+        badgesModalOpen = false;
+        render();
+      }
+    });
+
+    const handleModalEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        unlockAudioContext();
+        playUiClick();
+        badgesModalOpen = false;
+        render();
+        window.removeEventListener("keydown", handleModalEscape);
+      }
+    };
+    window.addEventListener("keydown", handleModalEscape);
+  }
 
   const profileSelect = document.getElementById("profileSelect") as HTMLSelectElement | null;
   const ageFilter = document.getElementById("ageFilter") as HTMLSelectElement | null;

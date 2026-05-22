@@ -62,6 +62,10 @@ export interface TranslationDictionary {
   footerByX: string;
   footerContribute: string;
   footerContributeAria: string;
+  badgesModalTitle: string;
+  badgesModalSub: string;
+  badgeLocked: string;
+  badgeUnlocked: string;
 }
 
 export type TranslationKey = keyof TranslationDictionary;

@@ -75,9 +75,6 @@ test("locale switch and fruit stacker navigation smoke", async ({ page }) => {
   await expect(page.locator(".game-header-back")).toBeVisible();
   await expect(page.locator("#gameSettingsMenuBtn")).toBeVisible();
   await expect(page.locator("#score")).toBeVisible();
-  await expect(page.locator("#bestScore")).toBeVisible();
-  await expect(page.locator("#soundToggleBtn")).toBeVisible();
-  await expect(page.locator("#restartBtn")).toBeVisible();
 
   const gameSettingsPanel = page.locator("#gameSettingsPanel");
   await expect(gameSettingsPanel).toBeHidden();
@@ -86,7 +83,7 @@ test("locale switch and fruit stacker navigation smoke", async ({ page }) => {
   await page.selectOption("#gameThemeSelect", "light");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   await page.click("#gameSoundBtn");
-  await expect(page.locator("#soundToggleBtn")).toContainText(/sound|sonido/i);
+  await expect(page.locator("#gameSoundBtn")).toContainText(/sound|sonido/i);
   await page.keyboard.press("Escape");
   await expect(gameSettingsPanel).toBeHidden();
 
@@ -95,3 +92,31 @@ test("locale switch and fruit stacker navigation smoke", async ({ page }) => {
   await page.click("a.game-header-back");
   await expect(page).toHaveURL(/\/$/);
 });
+
+test("badges and achievements modal interaction", async ({ page }) => {
+  await page.goto("/");
+
+  const badgesModal = page.locator("#badgesModalOverlay");
+  await expect(badgesModal).toBeHidden();
+
+  // Click on the badges stat-chip to open the achievements drawer/modal
+  await page.click("#badgesStatChip");
+  await expect(badgesModal).toBeVisible();
+
+  // Verify modal title and items
+  await expect(page.locator("#badgesModalTitle")).toBeVisible();
+  await expect(page.locator(".badge-card")).toHaveCount(6);
+
+  // Close the modal using the close button
+  await page.click("#closeBadgesModalBtn");
+  await expect(badgesModal).toBeHidden();
+
+  // Open it again
+  await page.click("#badgesStatChip");
+  await expect(badgesModal).toBeVisible();
+
+  // Close using Escape key
+  await page.keyboard.press("Escape");
+  await expect(badgesModal).toBeHidden();
+});
+

@@ -59,5 +59,9 @@
   "footerMadeWith": "made with",
   "footerByX": "by xvr",
   "footerContribute": "contribute",
-  "footerContributeAria": "open github repository to contribute"
+  "footerContributeAria": "open github repository to contribute",
+  "badgesModalTitle": "my badges",
+  "badgesModalSub": "play games to unlock cool badges!",
+  "badgeLocked": "locked",
+  "badgeUnlocked": "unlocked on"
 }

@@ -93,4 +93,21 @@ describe("platform storage", () => {
     const storage = createPlatformStorage(memory);
     expect(storage.getThemePreference()).toBe("system");
   });
+
+  test("unlocks and lists badges correctly per profile", () => {
+    const memory = new MemoryStorage();
+    const storage = createPlatformStorage(memory);
+
+    const profile = storage.createProfile("Mia", "rocket");
+    storage.setActiveProfile(profile.id);
+
+    storage.unlockBadge(profile.id, "first-steps");
+    storage.unlockBadge(profile.id, "night-owl");
+
+    const badges = storage.listBadges(profile.id);
+    expect(badges["first-steps"]).toBeDefined();
+    expect(badges["first-steps"].unlocked).toBe(true);
+    expect(badges["night-owl"].unlocked).toBe(true);
+    expect(badges["fruit-stacker-master"]).toBeUndefined();
+  });
 });

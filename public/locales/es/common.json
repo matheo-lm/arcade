@@ -59,5 +59,9 @@
   "footerMadeWith": "hecho con",
   "footerByX": "por xvr",
   "footerContribute": "contribuir",
-  "footerContributeAria": "abrir repositorio github para contribuir"
+  "footerContributeAria": "abrir repositorio github para contribuir",
+  "badgesModalTitle": "mis insignias",
+  "badgesModalSub": "¡juega juegos para desbloquear insignias!",
+  "badgeLocked": "bloqueada",
+  "badgeUnlocked": "desbloqueada el"
 }

@@ -62,7 +62,11 @@ export const dictionaries: Record<LocaleCode, TranslationDictionary> = {
     footerMadeWith: "made with",
     footerByX: "by xvr",
     footerContribute: "contribute",
-    footerContributeAria: "open github repository to contribute"
+    footerContributeAria: "open github repository to contribute",
+    badgesModalTitle: "my badges",
+    badgesModalSub: "play games to unlock cool badges!",
+    badgeLocked: "locked",
+    badgeUnlocked: "unlocked on"
   },
   es: {
     appTitle: "x's arcade",
@@ -125,6 +129,10 @@ export const dictionaries: Record<LocaleCode, TranslationDictionary> = {
     footerMadeWith: "hecho con",
     footerByX: "por xvr",
     footerContribute: "contribuir",
-    footerContributeAria: "abrir repositorio github para contribuir"
+    footerContributeAria: "abrir repositorio github para contribuir",
+    badgesModalTitle: "mis insignias",
+    badgesModalSub: "¡juega juegos para desbloquear insignias!",
+    badgeLocked: "bloqueada",
+    badgeUnlocked: "desbloqueada el"
   }
 };
