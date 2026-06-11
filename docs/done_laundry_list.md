@@ -14,3 +14,4 @@ completed items, archived. never deleted — only moved from `docs/laundry_list.
 | 2026-06-11 | [Minor] ES `highScoreLabel` | `"puntaje max"` → `"puntaje máximo"` in dictionaries.ts and es/common.json |
 | 2026-06-11 | [Minor] ES `statsHighScoreTooltip` | `"puntaje max"` → `"puntaje máximo"` in dictionaries.ts and es/common.json |
 | 2026-06-11 | [Trivial] ES `badgesModalSub` | Added missing `"geniales"` to match English "cool badges" |
+| 2026-06-11 | [Low-Med] XSS via innerHTML on game manifest data | Added `escapeHtml` helper; wrapped `game.title` and `game.description` in `renderCards`. Note: same pattern exists in badge modal data (lines 312,313,317) — not scoped. |
