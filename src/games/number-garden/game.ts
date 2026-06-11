@@ -552,9 +552,6 @@ export const initNumberGarden = (config: NumberGardenConfig): NumberGardenApi =>
     nextRound();
     render();
 
-    hintEl.textContent = strings.roundLabel ? `${strings.correctLabel}` : "";
-    // Set initial hint
-
     return {
         getMuted: () => muted,
         setMuted: (m: boolean) => {
