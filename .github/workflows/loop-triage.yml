@@ -1,0 +1,40 @@
+name: Loop Triage
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '0 9 * * 1'  # 9am Monday — enable when laundry_list is trustworthy
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Count laundry items
+        id: count
+        run: |
+          if [ -f docs/laundry_list.md ]; then
+            total=$(grep -c '\[\s\]' docs/laundry_list.md || true)
+            echo "total=$total" >> $GITHUB_OUTPUT
+          else
+            echo "total=0" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create triage issue
+        if: steps.count.outputs.total > 0
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const total = ${{ steps.count.outputs.total }};
+            const body = `Open laundry items: **${total}**\n\nSee \`docs/laundry_list.md\` for details.\n\nPick one item from the list and ship it this week.`;
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Weekly triage — ${total} open laundry items`,
+              body: body,
+              labels: ['triage']
+            });

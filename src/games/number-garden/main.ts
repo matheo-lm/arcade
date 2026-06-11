@@ -7,7 +7,7 @@ import { getAllGames } from "@platform/gameRegistry";
 import { platformStorage } from "@shared/storage/platformStorage";
 import { initNumberGarden } from "@games/number-garden/game";
 import { applyTheme, watchSystemTheme, type ThemePreference } from "@shared/ui/theme";
-import { renderGameHeader, updateGameHeaderAction, updateGameHeaderMeta } from "@shared/ui/gameHeader";
+import { renderGameHeader, updateGameHeaderMeta } from "@shared/ui/gameHeader";
 import { bindSettingsMenuEvents, renderSettingsMenu, type SettingsMenuConfig } from "@shared/ui/settingsMenu";
 
 const byId = <T extends HTMLElement>(id: string): T => {
