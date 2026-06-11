@@ -32,10 +32,6 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 - [ ] **[Low]** `validateManifest` positive case (valid manifest → no errors) not tested
 
 ## localization
-- [ ] **[Minor]** ES `skillLogic`: `"logica"` should be `"lógica"` (missing accent)
-- [ ] **[Minor]** ES `highScoreLabel`: `"puntaje max"` should use full word `"máximo"` or at least proper accent
-- [ ] **[Minor]** ES `statsHighScoreTooltip`: same accent issue as above
-- [ ] **[Trivial]** ES `badgesModalSub`: missing `"geniales"` ("cool"), English says "cool badges"
 - [ ] **[Med]** No i18n dictionary-vs-locale-file sync test (65 keys never cross-checked)
 
 ## polish
@@ -63,7 +59,7 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 | gameplay | 2 |
 | code quality | 5 |
 | testing & coverage | 8 |
-| localization | 5 |
+| localization | 1 |
 | polish | 4 |
 | config & infra | 8 |
-| **total** | **32** |
+| **total** | **28** |
