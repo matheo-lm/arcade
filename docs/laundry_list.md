@@ -36,8 +36,8 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 
 ## polish
 - [ ] Add loading states between game transitions
-- [ ] Improve mobile touch feedback on game cards
-- [ ] Add keyboard navigation to launcher
+- [x] Improve mobile touch feedback on game cards — already present: `.game-card:active { transform: scale(0.98) }` with transition
+- [x] Add keyboard navigation to launcher — coming-soon cards get `tabindex="0"`, Enter/Space shake handler, `:focus-visible` outline
 - [ ] **[Low]** Misleading test name `"uses kiwi + pumpkin chain order"` — tests full 10-fruit chain (tests/unit/fruitStackerConfig.test.ts:5)
 
 ## config & infra

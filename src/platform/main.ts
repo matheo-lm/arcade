@@ -104,8 +104,9 @@ const renderCards = (games: GameManifest[]): string =>
       const ageTags = game.ageBands.map((age) => `<span class=\"tag\">${ageLabel(age)}</span>`).join("");
       const skillTags = game.skills.map((skill) => `<span class=\"tag\">${skillLabel(skill)}</span>`).join("");
 
+      const cardTabIndex = playable ? "" : " tabindex=\"0\"";
       return `
-        <article class="panel game-card ${cardClass}" data-game-id="${game.id}">
+        <article class="panel game-card ${cardClass}" data-game-id="${game.id}"${cardTabIndex}>
           <div class="card-top">
             <span class="card-icon" aria-hidden="true">${iconMarkup(game)}</span>
             <span class="status-pill ${statusClass}">${statusText}</span>
@@ -467,20 +468,24 @@ const render = (): void => {
     render();
   });
 
-  // Wire up coming soon shake effects
+  // Wire up coming soon shake effects (click + keyboard)
   const comingSoonCards = app.querySelectorAll(".game-card.coming-soon");
   comingSoonCards.forEach((card) => {
-    card.addEventListener("click", () => {
+    const el = card as HTMLElement;
+    const onInteraction = (): void => {
       unlockAudioContext();
-      // Simple error/locked sound using oscillator if possible, or just ui click for now
-      // Since playUiClick is imported, let's use that but maybe we can do a distinct sound later.
-      // For now, reusing click is better than silence.
       playUiClick();
 
-      card.classList.remove("shake");
-      // Force reflow
-      void (card as HTMLElement).offsetWidth;
-      card.classList.add("shake");
+      el.classList.remove("shake");
+      void el.offsetWidth;
+      el.classList.add("shake");
+    };
+    el.addEventListener("click", onInteraction);
+    el.addEventListener("keydown", (event: KeyboardEvent) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        onInteraction();
+      }
     });
   });
 };
