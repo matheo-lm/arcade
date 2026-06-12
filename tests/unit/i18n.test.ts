@@ -67,8 +67,8 @@ describe("i18n dictionary vs locale file sync", () => {
 
 describe("i18n runtime t()", () => {
   test("returns value for existing key in current locale", () => {
-    expect(dictionaries.en.appTitle).toBe("berries arcade");
-    expect(dictionaries.es.appTitle).toBe("berries arcade");
+    expect(dictionaries.en.appTitle).toBe("arcade");
+    expect(dictionaries.es.appTitle).toBe("arcade");
   });
 
   test("falls back to en when key missing in es", () => {

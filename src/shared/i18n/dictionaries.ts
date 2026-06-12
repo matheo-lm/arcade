@@ -2,7 +2,7 @@ import type { LocaleCode, TranslationDictionary } from "@shared/types/i18n";
 
 export const dictionaries: Record<LocaleCode, TranslationDictionary> = {
   en: {
-    appTitle: "berries arcade",
+    appTitle: "arcade",
     appSubtitle: "pick a game to play and learn.",
     profileLabel: "player",
     profileCreate: "new profile",
@@ -70,7 +70,7 @@ export const dictionaries: Record<LocaleCode, TranslationDictionary> = {
     closeModal: "close modal"
   },
   es: {
-    appTitle: "berries arcade",
+    appTitle: "arcade",
     appSubtitle: "elige un juego para jugar y aprender.",
     profileLabel: "jugador",
     profileCreate: "nuevo perfil",
