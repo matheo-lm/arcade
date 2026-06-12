@@ -2,7 +2,7 @@
 > last updated: 2026-06-12
 
 ## current goal
-Fix XSS via innerHTML on game manifest data — done. Fix hardcoded English aria-label on badges close button — done. 26 items remain.
+Add CSP and Permissions-Policy security headers to `vercel.json` — done. 11 items remain.
 
 ## progress
 - [x] loop-kit infrastructure setup complete
@@ -17,20 +17,18 @@ Fix XSS via innerHTML on game manifest data — done. Fix hardcoded English aria
 - [x] ES fix 4: badgesModalSub added missing "geniales"
 - [x] XSS fix: escapeHtml helper + wrapping game title/description in renderCards
 - [x] aria-label fix: localized badges close button with closeModal key
-- [x] typecheck + tests pass (22/22)
+- [x] Security headers: CSP + Permissions-Policy added to vercel.json
+- [x] Laundry list cleanup: 8 stale items moved to done (GameFilter.locale, placeholder x's, settingsMenu tests, theme tests, Number Garden E2E, validateManifest test, i18n sync test, keyboard navigation, ESLint/lint)
 
 ## findings
-- **Loop-kit infra**: AGENTS.md merged with loop-kit framework; all 5 pieces created (memory, skills, sub-agents, automations, worktrees).
-- **Asset catalog**: 38 files on disk, all cataloged in pixel-art.json. Catalog is complete and consistent. Family consistency tests pass.
-- **Game manifests**: All 9 manifests have required fields. 2 playable (fruit-stacker, number-garden), 7 placeholder.
-- **Localization**: 66/66 keys present in both EN/ES. All ES strings now have correct accents and match English semantics. Dictionaries match JSON files exactly.
-- **Test coverage**: ~85% of source code uncovered. Fruit Stacker (1049 lines) and Number Garden (566 lines) game engines have zero unit tests. 1 E2E spec for launcher only — no Number Garden E2E.
-- **Code quality**: Generally clean — no `any`, no `console.log`, no `@ts-ignore`. 1 dead parameter (filterGames locale), no remaining unescaped innerHTML for manifest data, no remaining unlocalized aria-labels.
-- **Config**: `.env.local` is gitignored and not tracked. Placeholder `"x's"` product name in 14 locations. No service worker for PWA. No ESLint/lint script. No security headers in vercel.json.
-- **Audit yielded 36 laundry items** across bugs, code quality, testing, localization, polish, and config/infra.
+- **Security headers**: `vercel.json` now has `Content-Security-Policy` (default-src/script-src/style-src/font-src/img-src/connect-src all locked to 'self' plus Google Fonts CDN; object-src/base-uri/frame-ancestors/form-action locked down) and `Permissions-Policy` (camera, microphone, geolocation, payment, usb, interest-cohort, display-capture all disabled). Pre-existing: X-Content-Type-Options, X-Frame-Options, Referrer-Policy.
+- **Laundry list**: 10 items completed this session (1 new + 9 stale items verified and archived). 11 items remain.
+- **Test coverage**: ~85% of source code uncovered. Fruit Stacker (1049 lines) and Number Garden (572 lines) game engines have zero unit tests. Number Garden now has E2E smoke test.
+- **Code quality**: No dead parameters remain. No placeholder product names remain. ESLint with flat config is active.
+- **Config**: `.env.local` is gitignored and not tracked. No service worker for PWA.
 
 ## blockers
 None.
 
 ## next actions
-1. Pick next highest-impact item from docs/laundry_list.md (26 remain)
+1. Pick next highest-impact item from docs/laundry_list.md (11 remain)

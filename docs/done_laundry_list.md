@@ -16,3 +16,13 @@ completed items, archived. never deleted — only moved from `docs/laundry_list.
 | 2026-06-11 | [Trivial] ES `badgesModalSub` | Added missing `"geniales"` to match English "cool badges" |
 | 2026-06-11 | [Low-Med] XSS via innerHTML on game manifest data | Added `escapeHtml` helper; wrapped `game.title` and `game.description` in `renderCards`. Note: same pattern exists in badge modal data (lines 312,313,317) — not scoped. |
 | 2026-06-12 | [Medium] Hardcoded English aria-label on badges close button | Replaced with i18n `closeModal` key (en: "close modal", es: "cerrar modal") across dictionaries.ts, type, locale JSONs, and main.ts |
+| 2026-06-12 | [Medium] `GameFilter.locale` dead parameter | Removed `locale` field from `GameFilter` interface in gameRegistry.ts (commit b560cd4) |
+| 2026-06-12 | [Low] Placeholder `x's` in product name | Replaced with "arcade" in all 14 locations across HTML, manifest, i18n files (commit ae10bbc) |
+| 2026-06-12 | [High] Shared UI settingsMenu.ts unit tests | Added 27 unit tests covering render, toggle, XSS, localization, dark mode (commit a003727) |
+| 2026-06-12 | [High] Shared UI theme.ts unit tests | Added 11 unit tests covering resolve, apply, watch, system preference (commit 3b38751) |
+| 2026-06-12 | [High] Number Garden E2E smoke test | Added E2E spec covering game shell rendering, navigation, win/game-over flow (commit on main) |
+| 2026-06-12 | [Low] `validateManifest` positive case test | Added positive case test in gameRegistry.test.ts (commit 00f714d) |
+| 2026-06-12 | [Med] i18n dictionary-vs-locale-file sync test | Added sync test comparing dictionary keys/values against en/es/common.json (commit 90ebeed) |
+| 2026-06-12 | [ ] Add keyboard navigation to launcher | Added tabindex, focus-visible, Enter/Space handling for game cards (commit 514e47f) |
+| 2026-06-12 | [Med] No lint script or ESLint dep | Added eslint.config.js, lint script in package.json (commit 75cf59d) |
+| 2026-06-12 | [Med] Security headers in vercel.json (CSP, Permissions-Policy) | Added Content-Security-Policy (locked to self + Google Fonts) and Permissions-Policy (disabled unused capabilities); X-Content-Type-Options, X-Frame-Options, Referrer-Policy were already present |
