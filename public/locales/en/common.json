@@ -1,5 +1,5 @@
 {
-  "appTitle": "x's arcade",
+  "appTitle": "berries arcade",
   "appSubtitle": "pick a game to play and learn.",
   "profileLabel": "player",
   "profileCreate": "new profile",
@@ -63,5 +63,6 @@
   "badgesModalTitle": "my badges",
   "badgesModalSub": "play games to unlock cool badges!",
   "badgeLocked": "locked",
-  "badgeUnlocked": "unlocked on"
+  "badgeUnlocked": "unlocked on",
+  "closeModal": "close modal"
 }

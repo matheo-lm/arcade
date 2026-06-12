@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 import { FRUIT_TIERS, TERMINAL_FRUIT_ID } from "@games/fruit-stacker/config";
 
 describe("fruit stacker config", () => {
-  test("uses kiwi + pumpkin chain order", () => {
+  test("uses full 10-fruit merge chain order", () => {
     expect(FRUIT_TIERS.map((tier) => tier.id)).toEqual([
       "cherry",
       "lemon",

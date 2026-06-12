@@ -1,5 +1,5 @@
 {
-  "appTitle": "x's arcade",
+  "appTitle": "berries arcade",
   "appSubtitle": "elige un juego para jugar y aprender.",
   "profileLabel": "jugador",
   "profileCreate": "nuevo perfil",
@@ -63,5 +63,6 @@
   "badgesModalTitle": "mis insignias",
   "badgesModalSub": "¡juega juegos para desbloquear insignias geniales!",
   "badgeLocked": "bloqueada",
-  "badgeUnlocked": "desbloqueada el"
+  "badgeUnlocked": "desbloqueada el",
+  "closeModal": "cerrar modal"
 }
