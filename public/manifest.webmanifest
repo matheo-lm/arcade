@@ -1,6 +1,6 @@
 {
-  "name": "x's arcade",
-  "short_name": "x's",
+  "name": "berries arcade",
+  "short_name": "berries",
   "description": "minimal web arcade with learning games for ages 4-8.",
   "start_url": "/",
   "display": "standalone",
