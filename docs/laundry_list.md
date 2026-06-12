@@ -27,7 +27,6 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 - [ ] **[High]** Shared UI components — `settingsMenu.ts` (255 lines), `gameHeader.ts` (94 lines), `theme.ts` (39 lines) — zero unit tests
 - [ ] **[High]** Number Garden — no E2E smoke test whatsoever
 - [ ] **[Med]** i18n `createI18n` runtime — `t()`, `setLocale()`, fallback chain never tested
-- [ ] **[Med]** No vitest config file (`vitest.config.ts`)
 - [ ] **[Low]** `validateManifest` positive case (valid manifest → no errors) not tested
 
 ## localization
@@ -56,8 +55,8 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 | bugs | 0 |
 | gameplay | 2 |
 | code quality | 3 |
-| testing & coverage | 8 |
+| testing & coverage | 7 |
 | localization | 1 |
 | polish | 3 |
 | config & infra | 6 |
-| **total** | **24** |
+| **total** | **23** |
