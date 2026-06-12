@@ -46,8 +46,7 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 - [ ] **[Med]** Evaluate third-party Google Fonts against "no third-party analytics" baseline — consider self-hosting or system fonts
 - [ ] **[Med]** No security headers in `vercel.json` (CSP, X-Frame-Options)
 - [ ] **[Low]** Playwright config uses port 4173 (preview default) with `npm run dev` — confusion between dev/preview
-- [ ] **[Low]** Missing `lang` attribute on game HTML files
-- [ ] **[Low]** Stale `output/web-game/*` gitignore entry
+
 - [ ] **[Low]** Missing `categories` and `screenshots` in manifest.webmanifest
 
 ---
@@ -61,5 +60,5 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 | testing & coverage | 8 |
 | localization | 1 |
 | polish | 4 |
-| config & infra | 8 |
-| **total** | **28** |
+| config & infra | 6 |
+| **total** | **26** |
