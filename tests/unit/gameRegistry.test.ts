@@ -7,6 +7,14 @@ describe("game registry", () => {
     expect(getAllGames()).toHaveLength(9);
   });
 
+  test("returns all games when no filter is applied", () => {
+    expect(filterGames({})).toHaveLength(9);
+  });
+
+  test("filter with no params returns all games (locale is ignored)", () => {
+    expect(filterGames({})).toHaveLength(9);
+  });
+
   test("filters by age and skill", () => {
     const filtered = filterGames({ ageBand: "4-5", skillTag: "literacy" });
     expect(filtered.length).toBeGreaterThan(0);
@@ -14,9 +22,8 @@ describe("game registry", () => {
     expect(filtered.every((game) => game.skills.includes("literacy"))).toBe(true);
   });
 
-  test("validateManifest passes a known-valid manifest", () => {
-    const games = getAllGames();
-    const errors = validateManifest(games[0]);
+  test("manifest validator accepts a valid manifest", () => {
+    const errors = validateManifest(getAllGames()[0]);
     expect(errors).toHaveLength(0);
   });
 
