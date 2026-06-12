@@ -25,7 +25,7 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 - [ ] **[Critical]** Fruit Stacker `game.ts` (1049 lines) — zero unit tests. No coverage for merge logic, collision, top-line, pumpkin detection
 - [ ] **[Critical]** Number Garden `game.ts` (566 lines) — zero unit tests. No coverage for round logic, flower gen, correct/wrong handling
 - [ ] **[High]** Launcher `main.ts` (492 lines) — zero unit tests (only indirect E2E)
-- [ ] **[High]** Shared UI components — `settingsMenu.ts` (255 lines), `gameHeader.ts` (94 lines), `theme.ts` (39 lines) — zero unit tests
+- [x] **[High]** `theme.ts` (39 lines) — unit tests added (11 tests covering resolve, apply, watch)
 - [ ] **[High]** Number Garden — no E2E smoke test whatsoever
 - [ ] **[Med]** i18n `createI18n` runtime — `t()`, `setLocale()`, fallback chain never tested
 - [ ] **[Med]** No vitest config file (`vitest.config.ts`)
