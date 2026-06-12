@@ -2,7 +2,7 @@
 > last updated: 2026-06-12
 
 ## current goal
-Fix hardcoded English aria-label on badges close button — done. 26 items remain.
+Fix XSS via innerHTML on game manifest data — done. Fix hardcoded English aria-label on badges close button — done. 26 items remain.
 
 ## progress
 - [x] loop-kit infrastructure setup complete

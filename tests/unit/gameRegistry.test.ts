@@ -14,6 +14,12 @@ describe("game registry", () => {
     expect(filtered.every((game) => game.skills.includes("literacy"))).toBe(true);
   });
 
+  test("validateManifest passes a known-valid manifest", () => {
+    const games = getAllGames();
+    const errors = validateManifest(games[0]);
+    expect(errors).toHaveLength(0);
+  });
+
   test("manifest validator reports missing required fields", () => {
     const badManifest = {
       id: "",

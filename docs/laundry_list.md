@@ -37,7 +37,7 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 - [ ] Add loading states between game transitions
 - [ ] Improve mobile touch feedback on game cards
 - [ ] Add keyboard navigation to launcher
-- [ ] **[Low]** Misleading test name `"uses kiwi + pumpkin chain order"` — tests full 10-fruit chain (tests/unit/fruitStackerConfig.test.ts:5)
+
 
 ## config & infra
 - [ ] **[Med]** No lint script or ESLint dep, but `AGENTS.md` references `npm run lint`
@@ -56,9 +56,11 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 |------|-------|
 | bugs | 0 |
 | gameplay | 2 |
+<<<<<<< HEAD
 | code quality | 3 |
 | testing & coverage | 8 |
 | localization | 1 |
-| polish | 4 |
+| polish | 3 |
 | config & infra | 8 |
+<<<<<<< HEAD
 | **total** | **26** |

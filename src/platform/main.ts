@@ -10,6 +10,9 @@ import { bindSettingsMenuEvents, renderSettingsMenu, type SettingsMenuConfig } f
 import type { AgeBand, GameManifest, SkillTag } from "@shared/types/game";
 import { badgeDefinitions } from "@shared/badges/badgeDefs";
 
+const escapeHtml = (s: string): string =>
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+
 const app = document.getElementById("app");
 if (!app) throw new Error("Launcher root #app is missing");
 
@@ -110,8 +113,8 @@ const renderCards = (games: GameManifest[]): string =>
             <span class="card-icon" aria-hidden="true">${iconMarkup(game)}</span>
             <span class="status-pill ${statusClass}">${statusText}</span>
           </div>
-          <h2>${game.title[i18n.locale]}</h2>
-          <p>${game.description[i18n.locale]}</p>
+          <h2>${escapeHtml(game.title[i18n.locale])}</h2>
+          <p>${escapeHtml(game.description[i18n.locale])}</p>
           <div class="card-details">
             <div class="card-tags">
               <div class="tag-row">${ageTags}</div>
