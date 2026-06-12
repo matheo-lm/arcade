@@ -2,7 +2,7 @@ import type { LocaleCode, TranslationDictionary } from "@shared/types/i18n";
 
 export const dictionaries: Record<LocaleCode, TranslationDictionary> = {
   en: {
-    appTitle: "x's arcade",
+    appTitle: "berries arcade",
     appSubtitle: "pick a game to play and learn.",
     profileLabel: "player",
     profileCreate: "new profile",
@@ -66,10 +66,11 @@ export const dictionaries: Record<LocaleCode, TranslationDictionary> = {
     badgesModalTitle: "my badges",
     badgesModalSub: "play games to unlock cool badges!",
     badgeLocked: "locked",
-    badgeUnlocked: "unlocked on"
+    badgeUnlocked: "unlocked on",
+    closeModal: "close modal"
   },
   es: {
-    appTitle: "x's arcade",
+    appTitle: "berries arcade",
     appSubtitle: "elige un juego para jugar y aprender.",
     profileLabel: "jugador",
     profileCreate: "nuevo perfil",
@@ -133,6 +134,7 @@ export const dictionaries: Record<LocaleCode, TranslationDictionary> = {
     badgesModalTitle: "mis insignias",
     badgesModalSub: "¡juega juegos para desbloquear insignias geniales!",
     badgeLocked: "bloqueada",
-    badgeUnlocked: "desbloqueada el"
+    badgeUnlocked: "desbloqueada el",
+    closeModal: "cerrar modal"
   }
 };

@@ -66,6 +66,7 @@ export interface TranslationDictionary {
   badgesModalSub: string;
   badgeLocked: string;
   badgeUnlocked: string;
+  closeModal: string;
 }
 
 export type TranslationKey = keyof TranslationDictionary;

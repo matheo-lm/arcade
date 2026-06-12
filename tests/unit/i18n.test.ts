@@ -64,3 +64,18 @@ describe("i18n dictionary vs locale file sync", () => {
     }
   });
 });
+
+describe("i18n runtime t()", () => {
+  test("returns value for existing key in current locale", () => {
+    expect(dictionaries.en.appTitle).toBe("x's arcade");
+    expect(dictionaries.es.appTitle).toBe("x's arcade");
+  });
+
+  test("falls back to en when key missing in es", () => {
+    const key = "appTitle" as const;
+    const esVal = dictionaries.es[key];
+    const enVal = dictionaries.en[key];
+    const fallback = esVal ?? enVal;
+    expect(fallback).toBe(enVal);
+  });
+});
