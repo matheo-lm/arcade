@@ -41,8 +41,6 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 
 ## config & infra
 - [ ] **[Med]** No lint script or ESLint dep, but `AGENTS.md` references `npm run lint`
-- [ ] **[Med]** PWA: no service worker registered, `display: standalone` without installability
-- [ ] **[Med]** Evaluate third-party Google Fonts against "no third-party analytics" baseline — consider self-hosting or system fonts
 - [ ] **[Med]** No security headers in `vercel.json` (CSP, X-Frame-Options)
 - [ ] **[Low]** Playwright config uses port 4173 (preview default) with `npm run dev` — confusion between dev/preview
 
@@ -56,8 +54,8 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 | bugs | 0 |
 | gameplay | 2 |
 | code quality | 3 |
-| testing & coverage | 7 |
+| testing & coverage | 8 |
 | localization | 1 |
 | polish | 3 |
-| config & infra | 6 |
-| **total** | **23** |
+| config & infra | 4 |
+| **total** | **21** |
