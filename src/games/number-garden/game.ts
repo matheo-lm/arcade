@@ -7,6 +7,23 @@
  */
 
 /* ------------------------------------------------------------------ */
+/*  Easing                                                             */
+/* ------------------------------------------------------------------ */
+
+export const easeOutBack = (t: number): number => {
+    const c1 = 1.70158;
+    const c3 = c1 + 1;
+    return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+};
+
+export const calculateStars = (score: number, goalScore: number): number => {
+    if (score >= Math.round(goalScore * 1.4)) return 3;
+    if (score >= goalScore) return 2;
+    if (score >= Math.round(goalScore * 0.6)) return 1;
+    return 0;
+};
+
+/* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
 
@@ -526,14 +543,6 @@ export const initNumberGarden = (config: NumberGardenConfig): NumberGardenApi =>
         }
 
         animFrame = requestAnimationFrame(render);
-    };
-
-    /* ---- Easing ---- */
-
-    const easeOutBack = (t: number): number => {
-        const c1 = 1.70158;
-        const c3 = c1 + 1;
-        return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
     };
 
     /* ---- Event handlers ---- */
