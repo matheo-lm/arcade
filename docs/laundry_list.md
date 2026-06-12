@@ -54,8 +54,8 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 | bugs | 0 |
 | gameplay | 2 |
 | code quality | 3 |
-| testing & coverage | 7 |
+| testing & coverage | 8 |
 | localization | 1 |
 | polish | 3 |
-| config & infra | 6 |
-| **total** | **23** |
+| config & infra | 4 |
+| **total** | **21** |
