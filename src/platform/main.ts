@@ -166,7 +166,7 @@ const render = (): void => {
   platformStorage.unlockBadge(active.id, "first-steps");
 
   // 2. Star Collector (star-collector)
-  const starCheckGames = filterGames({ locale: i18n.locale });
+  const starCheckGames = filterGames({});
   const starCheckTotalStars = starCheckGames.reduce((sum, game) => {
     return sum + platformStorage.getGameProgress(active.id, game.id).stars;
   }, 0);
@@ -181,8 +181,7 @@ const render = (): void => {
 
   const games = filterGames({
     ageBand: selectedAge || undefined,
-    skillTag: selectedSkill || undefined,
-    locale: i18n.locale
+    skillTag: selectedSkill || undefined
   });
 
   const totalStars = games.reduce((sum, game) => {
