@@ -56,11 +56,9 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 |------|-------|
 | bugs | 0 |
 | gameplay | 2 |
-<<<<<<< HEAD
 | code quality | 3 |
 | testing & coverage | 8 |
 | localization | 1 |
 | polish | 3 |
 | config & infra | 8 |
-<<<<<<< HEAD
 | **total** | **26** |
