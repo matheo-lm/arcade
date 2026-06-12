@@ -2,7 +2,7 @@
 > last updated: 2026-06-11
 
 ## current goal
-Fix 4 ES localization bugs — done. 28 items remain in docs/laundry_list.md.
+Fix XSS via innerHTML on game manifest data — done. 27 items remain.
 
 ## progress
 - [x] loop-kit infrastructure setup complete
@@ -15,6 +15,7 @@ Fix 4 ES localization bugs — done. 28 items remain in docs/laundry_list.md.
 - [x] ES fix 2: highScoreLabel "puntaje max" → "puntaje máximo"
 - [x] ES fix 3: statsHighScoreTooltip "puntaje max" → "puntaje máximo"
 - [x] ES fix 4: badgesModalSub added missing "geniales"
+- [x] XSS fix: escapeHtml helper + wrapping game title/description in renderCards
 - [x] typecheck + tests pass (22/22)
 
 ## findings
