@@ -44,6 +44,14 @@ export interface SettingsMenuHandlers {
 
 const idFor = (prefix: string, name: string): string => `${prefix}${name}`;
 
+const escapeHtml = (value: string): string =>
+  value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+
 export const renderSettingsMenu = (root: HTMLElement, config: SettingsMenuConfig): void => {
   const {
     idPrefix,
@@ -52,9 +60,27 @@ export const renderSettingsMenu = (root: HTMLElement, config: SettingsMenuConfig
     themePreference,
     themeControlMode = "select",
     muted,
-    labels,
+    labels: rawLabels,
     includeCreateProfile = false
   } = config;
+
+  const labels = {
+    settingsLabel: escapeHtml(rawLabels.settingsLabel),
+    settingsOpen: escapeHtml(rawLabels.settingsOpen),
+    settingsClose: escapeHtml(rawLabels.settingsClose),
+    themeLabel: escapeHtml(rawLabels.themeLabel),
+    themeSystem: escapeHtml(rawLabels.themeSystem),
+    themeLight: escapeHtml(rawLabels.themeLight),
+    themeDark: escapeHtml(rawLabels.themeDark),
+    languageLabel: escapeHtml(rawLabels.languageLabel),
+    audioLabel: escapeHtml(rawLabels.audioLabel),
+    soundOn: escapeHtml(rawLabels.soundOn),
+    soundOff: escapeHtml(rawLabels.soundOff),
+    ...(rawLabels.profileLabel !== undefined ? { profileLabel: escapeHtml(rawLabels.profileLabel) } : {}),
+    ...(rawLabels.createProfileLabel !== undefined ? { createProfileLabel: escapeHtml(rawLabels.createProfileLabel) } : {}),
+    ...(rawLabels.restartLabel !== undefined ? { restartLabel: escapeHtml(rawLabels.restartLabel) } : {}),
+    ...(rawLabels.fullscreenLabel !== undefined ? { fullscreenLabel: escapeHtml(rawLabels.fullscreenLabel) } : {}),
+  };
 
   const toggleId = idFor(idPrefix, "SettingsMenuBtn");
   const panelId = idFor(idPrefix, "SettingsPanel");
