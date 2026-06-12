@@ -6,6 +6,7 @@
   "display": "standalone",
   "background_color": "#f2f4f8",
   "theme_color": "#1a1f2e",
+  "categories": ["education", "games"],
   "icons": [
     {
       "src": "/assets/icon.svg",
