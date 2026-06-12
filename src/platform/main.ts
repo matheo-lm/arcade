@@ -330,7 +330,7 @@ const render = (): void => {
               <h2 id="badgesModalTitle">${i18n.t("badgesModalTitle")}</h2>
               <p id="badgesModalDesc" class="badges-modal-sub">${i18n.t("badgesModalSub")}</p>
             </div>
-            <button class="button close-modal-btn" id="closeBadgesModalBtn" type="button" aria-label="Close modal">×</button>
+            <button class="button close-modal-btn" id="closeBadgesModalBtn" type="button" aria-label="${i18n.t("closeModal")}">×</button>
           </div>
           <div class="badges-grid-container">
             <div class="badges-grid">
