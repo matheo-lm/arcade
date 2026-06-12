@@ -10,6 +10,9 @@ import { bindSettingsMenuEvents, renderSettingsMenu, type SettingsMenuConfig } f
 import type { AgeBand, GameManifest, SkillTag } from "@shared/types/game";
 import { badgeDefinitions } from "@shared/badges/badgeDefs";
 
+const escapeHtml = (s: string): string =>
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+
 const app = document.getElementById("app");
 if (!app) throw new Error("Launcher root #app is missing");
 
@@ -110,8 +113,8 @@ const renderCards = (games: GameManifest[]): string =>
             <span class="card-icon" aria-hidden="true">${iconMarkup(game)}</span>
             <span class="status-pill ${statusClass}">${statusText}</span>
           </div>
-          <h2>${game.title[i18n.locale]}</h2>
-          <p>${game.description[i18n.locale]}</p>
+          <h2>${escapeHtml(game.title[i18n.locale])}</h2>
+          <p>${escapeHtml(game.description[i18n.locale])}</p>
           <div class="card-details">
             <div class="card-tags">
               <div class="tag-row">${ageTags}</div>
@@ -166,7 +169,7 @@ const render = (): void => {
   platformStorage.unlockBadge(active.id, "first-steps");
 
   // 2. Star Collector (star-collector)
-  const starCheckGames = filterGames({ locale: i18n.locale });
+  const starCheckGames = filterGames({});
   const starCheckTotalStars = starCheckGames.reduce((sum, game) => {
     return sum + platformStorage.getGameProgress(active.id, game.id).stars;
   }, 0);
@@ -181,8 +184,7 @@ const render = (): void => {
 
   const games = filterGames({
     ageBand: selectedAge || undefined,
-    skillTag: selectedSkill || undefined,
-    locale: i18n.locale
+    skillTag: selectedSkill || undefined
   });
 
   const totalStars = games.reduce((sum, game) => {
@@ -330,7 +332,7 @@ const render = (): void => {
               <h2 id="badgesModalTitle">${i18n.t("badgesModalTitle")}</h2>
               <p id="badgesModalDesc" class="badges-modal-sub">${i18n.t("badgesModalSub")}</p>
             </div>
-            <button class="button close-modal-btn" id="closeBadgesModalBtn" type="button" aria-label="Close modal">×</button>
+            <button class="button close-modal-btn" id="closeBadgesModalBtn" type="button" aria-label="${i18n.t("closeModal")}">×</button>
           </div>
           <div class="badges-grid-container">
             <div class="badges-grid">

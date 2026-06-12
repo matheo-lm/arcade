@@ -66,7 +66,8 @@ export const dictionaries: Record<LocaleCode, TranslationDictionary> = {
     badgesModalTitle: "my badges",
     badgesModalSub: "play games to unlock cool badges!",
     badgeLocked: "locked",
-    badgeUnlocked: "unlocked on"
+    badgeUnlocked: "unlocked on",
+    closeModal: "close modal"
   },
   es: {
     appTitle: "x's arcade",
@@ -133,6 +134,7 @@ export const dictionaries: Record<LocaleCode, TranslationDictionary> = {
     badgesModalTitle: "mis insignias",
     badgesModalSub: "¡juega juegos para desbloquear insignias geniales!",
     badgeLocked: "bloqueada",
-    badgeUnlocked: "desbloqueada el"
+    badgeUnlocked: "desbloqueada el",
+    closeModal: "cerrar modal"
   }
 };
