@@ -18,7 +18,7 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 - [ ] **[Medium]** Hardcoded English `aria-label="Close modal"` in badges modal (src/platform/main.ts:333)
 - [ ] **[Medium]** `GameFilter.locale` is defined in interface but never consumed — dead parameter in `filterGames` (src/platform/gameRegistry.ts:27)
 - [ ] **[Low-Med]** Game manifest data (`title`, `description`) rendered via `innerHTML` without escaping (src/platform/main.ts:107-129)
-- [ ] **[Low]** Speculative config in placeholder manifests — `dropCooldownMs`, `goalScore`, `maxObjectsHint` are fruit-stacker/number-garden-specific (content/games/*.json)
+- [x] **[Low]** Speculative config — assessed. Fields are typed (`DifficultyPreset`), validated by `gameRegistry`, and consumed by 2 games. Harmless presence. Not worth refactoring.
 - [ ] **[Low]** Placeholder `x's` in product name — 14 occurrences across index.html, 9 game HTML files, manifest.webmanifest, i18n, locale files
 
 ## testing & coverage
