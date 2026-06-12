@@ -63,5 +63,6 @@
   "badgesModalTitle": "my badges",
   "badgesModalSub": "play games to unlock cool badges!",
   "badgeLocked": "locked",
-  "badgeUnlocked": "unlocked on"
+  "badgeUnlocked": "unlocked on",
+  "closeModal": "close modal"
 }

@@ -15,9 +15,8 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 - [ ] Add more game-over/win screen polish (animations, particle effects)
 
 ## code quality
-- [ ] **[Medium]** Hardcoded English `aria-label="Close modal"` in badges modal (src/platform/main.ts:333)
+
 - [ ] **[Medium]** `GameFilter.locale` is defined in interface but never consumed — dead parameter in `filterGames` (src/platform/gameRegistry.ts:27)
-- [ ] **[Low-Med]** Game manifest data (`title`, `description`) rendered via `innerHTML` without escaping (src/platform/main.ts:107-129)
 - [ ] **[Low]** Speculative config in placeholder manifests — `dropCooldownMs`, `goalScore`, `maxObjectsHint` are fruit-stacker/number-garden-specific (content/games/*.json)
 - [ ] **[Low]** Placeholder `x's` in product name — 14 occurrences across index.html, 9 game HTML files, manifest.webmanifest, i18n, locale files
 
@@ -37,7 +36,7 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 - [ ] Add loading states between game transitions
 - [ ] Improve mobile touch feedback on game cards
 - [ ] Add keyboard navigation to launcher
-- [ ] **[Low]** Misleading test name `"uses kiwi + pumpkin chain order"` — tests full 10-fruit chain (tests/unit/fruitStackerConfig.test.ts:5)
+
 
 ## config & infra
 - [ ] **[Med]** No lint script or ESLint dep, but `AGENTS.md` references `npm run lint`
@@ -45,8 +44,7 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 - [ ] **[Med]** Evaluate third-party Google Fonts against "no third-party analytics" baseline — consider self-hosting or system fonts
 - [ ] **[Med]** No security headers in `vercel.json` (CSP, X-Frame-Options)
 - [ ] **[Low]** Playwright config uses port 4173 (preview default) with `npm run dev` — confusion between dev/preview
-- [ ] **[Low]** Missing `lang` attribute on game HTML files
-- [ ] **[Low]** Stale `output/web-game/*` gitignore entry
+
 - [ ] **[Low]** Missing `categories` and `screenshots` in manifest.webmanifest
 
 ---
@@ -56,9 +54,9 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 |------|-------|
 | bugs | 0 |
 | gameplay | 2 |
-| code quality | 5 |
+| code quality | 3 |
 | testing & coverage | 7 |
 | localization | 1 |
-| polish | 4 |
-| config & infra | 8 |
-| **total** | **27** |
+| polish | 3 |
+| config & infra | 6 |
+| **total** | **23** |
