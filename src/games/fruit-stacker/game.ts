@@ -4,7 +4,7 @@ type FruitMeta = FruitTier & {
   sprite?: HTMLImageElement;
 };
 
-interface FruitState {
+export interface FruitState {
   id: string;
   type: number;
   x: number;
@@ -117,6 +117,65 @@ const TERMINAL_TYPE_INDEX = Math.max(
 );
 const PUMPKIN_TYPE_INDEX = TERMINAL_TYPE_INDEX;
 
+export const clamp = (value: number, min: number, max: number): number =>
+  Math.max(min, Math.min(max, value));
+
+export const resolveWorldBounds = (
+  fruit: FruitState,
+  boardWidth: number,
+  boardHeight: number
+): void => {
+  const radius = FRUITS[fruit.type].r;
+  const left = radius + PLAYFIELD_PADDING;
+  const right = boardWidth - radius - PLAYFIELD_PADDING;
+  const floor = boardHeight - radius - PLAYFIELD_PADDING;
+
+  if (fruit.x < left) {
+    fruit.x = left;
+    fruit.vx *= -WALL_BOUNCE;
+  } else if (fruit.x > right) {
+    fruit.x = right;
+    fruit.vx *= -WALL_BOUNCE;
+  }
+
+  if (fruit.y > floor) {
+    fruit.y = floor;
+    fruit.vy *= -FLOOR_BOUNCE;
+    if (Math.abs(fruit.vy) < REST_THRESHOLD) fruit.vy = 0;
+  }
+};
+
+export const hasImmediateTopLineBreach = (fruits: FruitState[]): boolean => {
+  for (const fruit of fruits) {
+    if (fruit.merged) continue;
+    if (!fruit.eligibleForTopLoss) continue;
+    if (fruit.ageFrames < TOP_LINE_SPAWN_EXEMPT_FRAMES) continue;
+    const radius = FRUITS[fruit.type].r;
+    const top = fruit.y - radius;
+    if (top < TOP_LINE_Y) return true;
+  }
+  return false;
+};
+
+export const hasPumpkinTouch = (fruits: FruitState[]): boolean => {
+  const pumpkins = fruits.filter((fruit) => !fruit.merged && fruit.type === PUMPKIN_TYPE_INDEX);
+  if (pumpkins.length < 2) return false;
+
+  for (let i = 0; i < pumpkins.length; i++) {
+    for (let j = i + 1; j < pumpkins.length; j++) {
+      const a = pumpkins[i];
+      const b = pumpkins[j];
+      const targetDistance = FRUITS[a.type].r + FRUITS[b.type].r;
+      const distance = Math.hypot(b.x - a.x, b.y - a.y);
+      if (distance <= targetDistance * 0.99) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+};
+
 export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi => {
   const ctx = options.canvas.getContext("2d");
   if (!ctx) throw new Error("Canvas 2D context is unavailable");
@@ -173,8 +232,6 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
   for (const fruit of FRUITS) {
     fruit.sprite = loadSprite(fruit.spriteUrl, fruit.fallbackSpriteUrl);
   }
-
-  const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
 
   const randomSpawnType = (): number => Math.floor(Math.random() * Math.min(SPAWN_POOL_SIZE, FRUITS.length));
 
@@ -481,27 +538,6 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     queuedDrop = false;
   };
 
-  const resolveWorldBounds = (fruit: FruitState): void => {
-    const radius = FRUITS[fruit.type].r;
-    const left = radius + PLAYFIELD_PADDING;
-    const right = boardWidth - radius - PLAYFIELD_PADDING;
-    const floor = boardHeight - radius - PLAYFIELD_PADDING;
-
-    if (fruit.x < left) {
-      fruit.x = left;
-      fruit.vx *= -WALL_BOUNCE;
-    } else if (fruit.x > right) {
-      fruit.x = right;
-      fruit.vx *= -WALL_BOUNCE;
-    }
-
-    if (fruit.y > floor) {
-      fruit.y = floor;
-      fruit.vy *= -FLOOR_BOUNCE;
-      if (Math.abs(fruit.vy) < REST_THRESHOLD) fruit.vy = 0;
-    }
-  };
-
   const tryMerge = (a: FruitState, b: FruitState, distance: number, targetDistance: number): boolean => {
     if (a.type !== b.type) return false;
     if (a.type >= TERMINAL_TYPE_INDEX) return false;
@@ -568,37 +604,6 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
     b.vy += impulse * ny;
   };
 
-  const hasImmediateTopLineBreach = (): boolean => {
-    for (const fruit of fruits) {
-      if (fruit.merged) continue;
-      if (!fruit.eligibleForTopLoss) continue;
-      if (fruit.ageFrames < TOP_LINE_SPAWN_EXEMPT_FRAMES) continue;
-      const radius = FRUITS[fruit.type].r;
-      const top = fruit.y - radius;
-      if (top < TOP_LINE_Y) return true;
-    }
-    return false;
-  };
-
-  const hasPumpkinTouch = (): boolean => {
-    const pumpkins = fruits.filter((fruit) => !fruit.merged && fruit.type === PUMPKIN_TYPE_INDEX);
-    if (pumpkins.length < 2) return false;
-
-    for (let i = 0; i < pumpkins.length; i++) {
-      for (let j = i + 1; j < pumpkins.length; j++) {
-        const a = pumpkins[i];
-        const b = pumpkins[j];
-        const targetDistance = FRUITS[a.type].r + FRUITS[b.type].r;
-        const distance = Math.hypot(b.x - a.x, b.y - a.y);
-        if (distance <= targetDistance * 0.99) {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  };
-
   const stepTransientEffects = (): void => {
     for (const effect of effects) {
       effect.y -= 0.6;
@@ -663,7 +668,7 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
       fruit.vy *= VELOCITY_DAMPING;
       fruit.x += fruit.vx;
       fruit.y += fruit.vy;
-      resolveWorldBounds(fruit);
+      resolveWorldBounds(fruit, boardWidth, boardHeight);
       const top = fruit.y - radius;
       if (!fruit.eligibleForTopLoss && top >= TOP_LINE_Y) {
         fruit.eligibleForTopLoss = true;
@@ -683,19 +688,19 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
 
     for (const fruit of fruits) {
       if (fruit.merged) continue;
-      resolveWorldBounds(fruit);
+      resolveWorldBounds(fruit, boardWidth, boardHeight);
     }
 
     fruits = fruits.filter((fruit) => !fruit.merged);
 
     stepTransientEffects();
 
-    if (hasImmediateTopLineBreach()) {
+    if (hasImmediateTopLineBreach(fruits)) {
       endRun("top-line");
       return;
     }
 
-    if (hasPumpkinTouch()) {
+    if (hasPumpkinTouch(fruits)) {
       endRun("pumpkin-touch");
     }
   };

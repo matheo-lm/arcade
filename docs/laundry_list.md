@@ -19,7 +19,7 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 - [ ] **[Low]** Speculative config in placeholder manifests — `dropCooldownMs`, `goalScore`, `maxObjectsHint` are fruit-stacker/number-garden-specific (content/games/*.json)
 
 ## testing & coverage
-- [ ] **[Critical]** Fruit Stacker `game.ts` (1049 lines) — zero unit tests. No coverage for merge logic, collision, top-line, pumpkin detection
+- [ ] **[Critical]** Fruit Stacker `game.ts` (1049 lines) — 26 tests added (top-line, pumpkin, world bounds, clamp). Merge logic (`tryMerge`) and collision resolution (`resolveCollision`) still untested (need side-effect separation)
 - [ ] **[Critical]** Number Garden `game.ts` (572 lines) — round logic still untested (closure-bound, needs state reducer); `easeOutBack` + `calculateStars` extracted (12 tests)
 - [ ] **[High]** Launcher `main.ts` (509 lines) — zero unit tests (only indirect E2E)
 - [x] **[High]** `gameHeader.ts` (94 lines) — unit tests added (13 tests covering render, update, XSS, edge cases)
