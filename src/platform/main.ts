@@ -10,6 +10,9 @@ import { bindSettingsMenuEvents, renderSettingsMenu, type SettingsMenuConfig } f
 import type { AgeBand, GameManifest, SkillTag } from "@shared/types/game";
 import { badgeDefinitions } from "@shared/badges/badgeDefs";
 
+const escapeHtml = (s: string): string =>
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+
 const app = document.getElementById("app");
 if (!app) throw new Error("Launcher root #app is missing");
 
@@ -104,14 +107,15 @@ const renderCards = (games: GameManifest[]): string =>
       const ageTags = game.ageBands.map((age) => `<span class=\"tag\">${ageLabel(age)}</span>`).join("");
       const skillTags = game.skills.map((skill) => `<span class=\"tag\">${skillLabel(skill)}</span>`).join("");
 
+      const cardTabIndex = playable ? "" : " tabindex=\"0\"";
       return `
-        <article class="panel game-card ${cardClass}" data-game-id="${game.id}">
+        <article class="panel game-card ${cardClass}" data-game-id="${game.id}"${cardTabIndex}>
           <div class="card-top">
             <span class="card-icon" aria-hidden="true">${iconMarkup(game)}</span>
             <span class="status-pill ${statusClass}">${statusText}</span>
           </div>
-          <h2>${game.title[i18n.locale]}</h2>
-          <p>${game.description[i18n.locale]}</p>
+          <h2>${escapeHtml(game.title[i18n.locale])}</h2>
+          <p>${escapeHtml(game.description[i18n.locale])}</p>
           <div class="card-details">
             <div class="card-tags">
               <div class="tag-row">${ageTags}</div>
@@ -166,7 +170,7 @@ const render = (): void => {
   platformStorage.unlockBadge(active.id, "first-steps");
 
   // 2. Star Collector (star-collector)
-  const starCheckGames = filterGames({ locale: i18n.locale });
+  const starCheckGames = filterGames({});
   const starCheckTotalStars = starCheckGames.reduce((sum, game) => {
     return sum + platformStorage.getGameProgress(active.id, game.id).stars;
   }, 0);
@@ -181,8 +185,7 @@ const render = (): void => {
 
   const games = filterGames({
     ageBand: selectedAge || undefined,
-    skillTag: selectedSkill || undefined,
-    locale: i18n.locale
+    skillTag: selectedSkill || undefined
   });
 
   const totalStars = games.reduce((sum, game) => {
@@ -330,7 +333,7 @@ const render = (): void => {
               <h2 id="badgesModalTitle">${i18n.t("badgesModalTitle")}</h2>
               <p id="badgesModalDesc" class="badges-modal-sub">${i18n.t("badgesModalSub")}</p>
             </div>
-            <button class="button close-modal-btn" id="closeBadgesModalBtn" type="button" aria-label="Close modal">×</button>
+            <button class="button close-modal-btn" id="closeBadgesModalBtn" type="button" aria-label="${i18n.t("closeModal")}">×</button>
           </div>
           <div class="badges-grid-container">
             <div class="badges-grid">
@@ -467,22 +470,36 @@ const render = (): void => {
     render();
   });
 
-  // Wire up coming soon shake effects
+  // Wire up coming soon shake effects (click + keyboard)
   const comingSoonCards = app.querySelectorAll(".game-card.coming-soon");
   comingSoonCards.forEach((card) => {
-    card.addEventListener("click", () => {
+    const el = card as HTMLElement;
+    const onInteraction = (): void => {
       unlockAudioContext();
-      // Simple error/locked sound using oscillator if possible, or just ui click for now
-      // Since playUiClick is imported, let's use that but maybe we can do a distinct sound later.
-      // For now, reusing click is better than silence.
       playUiClick();
 
-      card.classList.remove("shake");
-      // Force reflow
-      void (card as HTMLElement).offsetWidth;
-      card.classList.add("shake");
+      el.classList.remove("shake");
+      void el.offsetWidth;
+      el.classList.add("shake");
+    };
+    el.addEventListener("click", onInteraction);
+    el.addEventListener("keydown", (event: KeyboardEvent) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        onInteraction();
+      }
     });
   });
+
+  // Show loading overlay on game navigation
+  const loadingOverlay = document.getElementById("loadingOverlay");
+  if (loadingOverlay) {
+    app.querySelectorAll<HTMLAnchorElement>(".card-actions a").forEach((link) => {
+      link.addEventListener("click", () => {
+        loadingOverlay.classList.remove("hidden");
+      });
+    });
+  }
 };
 
 window.addEventListener("pointerdown", unlockAudioContext, { passive: true });
