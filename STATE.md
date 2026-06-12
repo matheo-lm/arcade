@@ -1,8 +1,8 @@
 # state
-> last updated: 2026-06-11
+> last updated: 2026-06-12
 
 ## current goal
-Fix 4 ES localization bugs — done. 28 items remain in docs/laundry_list.md.
+Fix XSS via innerHTML on game manifest data — done. Fix hardcoded English aria-label on badges close button — done. 26 items remain.
 
 ## progress
 - [x] loop-kit infrastructure setup complete
@@ -15,15 +15,17 @@ Fix 4 ES localization bugs — done. 28 items remain in docs/laundry_list.md.
 - [x] ES fix 2: highScoreLabel "puntaje max" → "puntaje máximo"
 - [x] ES fix 3: statsHighScoreTooltip "puntaje max" → "puntaje máximo"
 - [x] ES fix 4: badgesModalSub added missing "geniales"
+- [x] XSS fix: escapeHtml helper + wrapping game title/description in renderCards
+- [x] aria-label fix: localized badges close button with closeModal key
 - [x] typecheck + tests pass (22/22)
 
 ## findings
 - **Loop-kit infra**: AGENTS.md merged with loop-kit framework; all 5 pieces created (memory, skills, sub-agents, automations, worktrees).
 - **Asset catalog**: 38 files on disk, all cataloged in pixel-art.json. Catalog is complete and consistent. Family consistency tests pass.
 - **Game manifests**: All 9 manifests have required fields. 2 playable (fruit-stacker, number-garden), 7 placeholder.
-- **Localization**: 65/65 keys present in both EN/ES. All ES strings now have correct accents and match English semantics. Dictionaries match JSON files exactly.
+- **Localization**: 66/66 keys present in both EN/ES. All ES strings now have correct accents and match English semantics. Dictionaries match JSON files exactly.
 - **Test coverage**: ~85% of source code uncovered. Fruit Stacker (1049 lines) and Number Garden (566 lines) game engines have zero unit tests. 1 E2E spec for launcher only — no Number Garden E2E.
-- **Code quality**: Generally clean — no `any`, no `console.log`, no `@ts-ignore`. 1 dead parameter (filterGames locale), 1 missing aria-label localization, 1 XSS surface (innerHTML without escape on manifest data).
+- **Code quality**: Generally clean — no `any`, no `console.log`, no `@ts-ignore`. 1 dead parameter (filterGames locale), no remaining unescaped innerHTML for manifest data, no remaining unlocalized aria-labels.
 - **Config**: `.env.local` is gitignored and not tracked. Placeholder `"x's"` product name in 14 locations. No service worker for PWA. No ESLint/lint script. No security headers in vercel.json.
 - **Audit yielded 36 laundry items** across bugs, code quality, testing, localization, polish, and config/infra.
 
@@ -31,4 +33,4 @@ Fix 4 ES localization bugs — done. 28 items remain in docs/laundry_list.md.
 None.
 
 ## next actions
-1. Pick next highest-impact item from docs/laundry_list.md (28 remain)
+1. Pick next highest-impact item from docs/laundry_list.md (26 remain)

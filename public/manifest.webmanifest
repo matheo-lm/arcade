@@ -1,11 +1,12 @@
 {
-  "name": "x's arcade",
-  "short_name": "x's",
+  "name": "berries arcade",
+  "short_name": "berries",
   "description": "minimal web arcade with learning games for ages 4-8.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f2f4f8",
   "theme_color": "#1a1f2e",
+  "categories": ["education", "games"],
   "icons": [
     {
       "src": "/assets/icon.svg",

@@ -24,7 +24,6 @@ const manifests = [
 export interface GameFilter {
   ageBand?: AgeBand;
   skillTag?: SkillTag;
-  locale?: "en" | "es";
 }
 
 export const validateManifest = (manifest: GameManifest): string[] => {
