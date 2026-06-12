@@ -5,7 +5,7 @@ import "@games/number-garden/styles.css";
 import { createI18n } from "@shared/i18n";
 import { getAllGames } from "@platform/gameRegistry";
 import { platformStorage } from "@shared/storage/platformStorage";
-import { initNumberGarden } from "@games/number-garden/game";
+import { initNumberGarden, calculateStars } from "@games/number-garden/game";
 import { applyTheme, watchSystemTheme, type ThemePreference } from "@shared/ui/theme";
 import { renderGameHeader, updateGameHeaderMeta } from "@shared/ui/gameHeader";
 import { bindSettingsMenuEvents, renderSettingsMenu, type SettingsMenuConfig } from "@shared/ui/settingsMenu";
@@ -95,15 +95,6 @@ hint.textContent = i18n.t("gameHintNumberGarden");
 const preset = manifest.difficultyPresets["6-7"];
 const maxNumber = preset.maxObjectsHint || 8;
 
-/* ---- Stars calculation ---- */
-
-const calculateStars = (score: number): number => {
-    if (score >= Math.round(preset.goalScore * 1.4)) return 3;
-    if (score >= preset.goalScore) return 2;
-    if (score >= Math.round(preset.goalScore * 0.6)) return 1;
-    return 0;
-};
-
 /* ---- Init game ---- */
 
 const gameApi = initNumberGarden({
@@ -136,7 +127,7 @@ const gameApi = initNumberGarden({
     },
     onGameOver(score) {
         const current = platformStorage.getGameProgress(profileId, "number-garden");
-        const stars = calculateStars(score);
+        const stars = calculateStars(score, preset.goalScore);
         platformStorage.saveGameProgress(profileId, "number-garden", {
             highScore: Math.max(current.highScore, score),
             stars,
