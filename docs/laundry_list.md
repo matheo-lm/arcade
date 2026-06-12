@@ -33,7 +33,7 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 - [ ] **[Med]** No i18n dictionary-vs-locale-file sync test (65 keys never cross-checked)
 
 ## polish
-- [ ] Add loading states between game transitions
+- [x] Add loading states between game transitions — spinner overlay shown on card action click before navigation
 - [ ] Improve mobile touch feedback on game cards
 - [ ] Add keyboard navigation to launcher
 

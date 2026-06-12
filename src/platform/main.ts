@@ -485,6 +485,16 @@ const render = (): void => {
       card.classList.add("shake");
     });
   });
+
+  // Show loading overlay on game navigation
+  const loadingOverlay = document.getElementById("loadingOverlay");
+  if (loadingOverlay) {
+    app.querySelectorAll<HTMLAnchorElement>(".card-actions a").forEach((link) => {
+      link.addEventListener("click", () => {
+        loadingOverlay.classList.remove("hidden");
+      });
+    });
+  }
 };
 
 window.addEventListener("pointerdown", unlockAudioContext, { passive: true });
