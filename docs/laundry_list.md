@@ -22,7 +22,7 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 - [ ] **[Critical]** Number Garden `game.ts` (572 lines) — round logic still untested (closure-bound, needs state reducer); `easeOutBack` + `calculateStars` extracted (12 tests)
 - [ ] **[High]** Launcher `main.ts` (509 lines) — zero unit tests (only indirect E2E)
 - [x] **[High]** `gameHeader.ts` (94 lines) — unit tests added (13 tests covering render, update, XSS, edge cases)
-- [ ] **[Med]** i18n `createI18n` runtime — `t()`, `setLocale()`, fallback chain never tested
+- [x] **[Med]** i18n `createI18n` runtime — `t()`, `setLocale()`, fallback chain never tested
 
 ## localization
 *(none open)*
@@ -44,8 +44,8 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 | bugs | 0 |
 | gameplay | 2 |
 | code quality | 1 |
-| testing & coverage | 3 |
+| testing & coverage | 2 |
 | localization | 0 |
 | polish | 2 |
 | config & infra | 3 |
-| **total** | **11** |
+| **total** | **10** |
