@@ -19,7 +19,7 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 - [ ] **[Low]** Speculative config in placeholder manifests — `dropCooldownMs`, `goalScore`, `maxObjectsHint` are fruit-stacker/number-garden-specific (content/games/*.json)
 
 ## testing & coverage
-- [ ] **[Critical]** Number Garden `game.ts` (572 lines) — round logic still untested (closure-bound, needs state reducer); `easeOutBack` + `calculateStars` extracted (12 tests)
+- [x] **[Critical]** Number Garden `game.ts` (572 lines) — round logic still untested (closure-bound, needs state reducer); `evaluateGuess` extracted + 11 tests (23 total Number Garden tests)
 - [ ] **[High]** Launcher `main.ts` (509 lines) — zero unit tests (only indirect E2E)
 - [x] **[High]** `gameHeader.ts` (94 lines) — unit tests added (13 tests covering render, update, XSS, edge cases)
 - [x] **[Med]** i18n `createI18n` runtime — `t()`, `setLocale()`, fallback chain never tested
@@ -44,8 +44,8 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 | bugs | 0 |
 | gameplay | 2 |
 | code quality | 1 |
-| testing & coverage | 2 |
+| testing & coverage | 1 |
 | localization | 0 |
 | polish | 1 |
 | config & infra | 2 |
-| **total** | **8** |
+| **total** | **7** |

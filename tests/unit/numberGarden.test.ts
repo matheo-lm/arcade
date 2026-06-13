@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { easeOutBack, calculateStars } from "@games/number-garden/game";
+import { easeOutBack, calculateStars, evaluateGuess } from "@games/number-garden/game";
 
 describe("easeOutBack", () => {
   test("near 0 at t=0 (floating point)", () => {
@@ -61,4 +61,54 @@ describe("calculateStars", () => {
     expect(calculateStars(20, goal)).toBe(3);
   });
 
+});
+
+describe("evaluateGuess", () => {
+  const idleFlags = { gameRunning: true, bloomAnimating: false, numberPadDisabled: false };
+
+  test("blocked when gameRunning is false", () => {
+    expect(evaluateGuess(3, 3, { ...idleFlags, gameRunning: false }, { score: 0, goalScore: 10 })).toBe("blocked");
+  });
+
+  test("blocked when bloomAnimating is true", () => {
+    expect(evaluateGuess(3, 3, { ...idleFlags, bloomAnimating: true }, { score: 0, goalScore: 10 })).toBe("blocked");
+  });
+
+  test("blocked when numberPadDisabled is true", () => {
+    expect(evaluateGuess(3, 3, { ...idleFlags, numberPadDisabled: true }, { score: 0, goalScore: 10 })).toBe("blocked");
+  });
+
+  test("wrong when guess does not match currentCount", () => {
+    expect(evaluateGuess(2, 5, idleFlags, { score: 0, goalScore: 10 })).toBe("wrong");
+  });
+
+  test("wrong when guess matches at edge of range", () => {
+    expect(evaluateGuess(1, 10, idleFlags, { score: 0, goalScore: 10 })).toBe("wrong");
+  });
+
+  test("correct when guess matches and score stays below goal", () => {
+    expect(evaluateGuess(5, 5, idleFlags, { score: 3, goalScore: 10 })).toBe("correct");
+  });
+
+  test("correct when guess matches and score stays one below goal", () => {
+    expect(evaluateGuess(7, 7, idleFlags, { score: 8, goalScore: 10 })).toBe("correct");
+  });
+
+  test("win when guess reaches goalScore exactly", () => {
+    expect(evaluateGuess(4, 4, idleFlags, { score: 9, goalScore: 10 })).toBe("win");
+  });
+
+  test("win when guess exceeds goalScore", () => {
+    expect(evaluateGuess(3, 3, idleFlags, { score: 15, goalScore: 10 })).toBe("win");
+  });
+
+  test("win from zero score with goalScore of 1", () => {
+    expect(evaluateGuess(1, 1, idleFlags, { score: 0, goalScore: 1 })).toBe("win");
+  });
+
+  test("blocked takes priority over correct guess", () => {
+    expect(evaluateGuess(3, 3, { gameRunning: false, bloomAnimating: false, numberPadDisabled: false }, { score: 0, goalScore: 10 })).toBe("blocked");
+    expect(evaluateGuess(3, 3, { gameRunning: true, bloomAnimating: true, numberPadDisabled: false }, { score: 0, goalScore: 10 })).toBe("blocked");
+    expect(evaluateGuess(3, 3, { gameRunning: true, bloomAnimating: false, numberPadDisabled: true }, { score: 0, goalScore: 10 })).toBe("blocked");
+  });
 });
