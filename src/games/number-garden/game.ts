@@ -269,6 +269,28 @@ const playWinSound = (muted: boolean): void => {
 };
 
 /* ------------------------------------------------------------------ */
+/*  Pure round-logic helpers                                           */
+/* ------------------------------------------------------------------ */
+
+export type GuessOutcome = "blocked" | "wrong" | "correct" | "win";
+
+/**
+ * Evaluate a player's number guess against the current round state.
+ * Does not touch DOM, audio, or random — purely decision logic.
+ */
+export function evaluateGuess(
+    guess: number,
+    currentCount: number,
+    flags: { gameRunning: boolean; bloomAnimating: boolean; numberPadDisabled: boolean },
+    meta: { score: number; goalScore: number }
+): GuessOutcome {
+    if (!flags.gameRunning || flags.bloomAnimating || flags.numberPadDisabled) return "blocked";
+    if (guess !== currentCount) return "wrong";
+    const newScore = meta.score + 1;
+    return newScore >= meta.goalScore ? "win" : "correct";
+}
+
+/* ------------------------------------------------------------------ */
 /*  Main game init                                                     */
 /* ------------------------------------------------------------------ */
 
@@ -411,10 +433,13 @@ export const initNumberGarden = (config: NumberGardenConfig): NumberGardenApi =>
     };
 
     const handleNumberClick = (num: number): void => {
-        if (!gameRunning || bloomAnimating || numberPadDisabled) return;
+        const outcome = evaluateGuess(num, currentCount, {
+            gameRunning, bloomAnimating, numberPadDisabled
+        }, { score, goalScore });
 
-        if (num === currentCount) {
-            // Correct!
+        if (outcome === "blocked") return;
+
+        if (outcome !== "wrong") {
             score++;
             if (config.onScoreChange) config.onScoreChange(score);
             scoreEl.textContent = `${strings.scorePrefix}: ${score}`;
@@ -424,34 +449,28 @@ export const initNumberGarden = (config: NumberGardenConfig): NumberGardenApi =>
             playCorrectSound(muted);
             setNumberPadEnabled(false);
 
-            // Highlight the correct button
             const btns = numberPadEl.querySelectorAll<HTMLButtonElement>(".ng-num-btn");
             btns.forEach((b) => {
                 if (b.dataset.num === String(num)) b.classList.add("ng-correct");
             });
 
-            if (score >= goalScore) {
-                // Win!
+            if (outcome === "win") {
                 setTimeout(() => endGame(true), 800);
             } else {
                 setTimeout(() => {
-                    // Clear highlights
                     btns.forEach((b) => b.classList.remove("ng-correct"));
                     nextRound();
                 }, 900);
             }
         } else {
-            // Wrong
             feedbackText = `✗ ${strings.tryAgainLabel}`;
             feedbackColor = "#e53935";
             feedbackTimer = performance.now();
             playWrongSound(muted);
 
-            // Shake the board
             boardEl.classList.add("ng-shake");
             setTimeout(() => boardEl.classList.remove("ng-shake"), 400);
 
-            // Briefly highlight the wrong button
             const btns = numberPadEl.querySelectorAll<HTMLButtonElement>(".ng-num-btn");
             btns.forEach((b) => {
                 if (b.dataset.num === String(num)) b.classList.add("ng-wrong");
