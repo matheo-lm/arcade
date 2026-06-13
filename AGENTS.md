@@ -58,7 +58,7 @@ STATE.md → read memory → plan → implement → verify → update STATE.md �
 ### The Five Pieces
 
 1. **Memory** — `STATE.md` tracks the current goal and blockers; `docs/laundry_list.md` is the ranked backlog and `docs/done_laundry_list.md` the archive. The agent reads them at session start and writes at session end. The model forgets; the repo doesn't.
-2. **Skills** — `skills/<name>/SKILL.md` files codify project knowledge so every agent doesn't re-derive it from zero. Conventions, build steps, rationale — written once, read every run.
+2. **Skills** — `skills/<name>/SKILL.md` files codify project knowledge so every agent doesn't re-derive it from zero. Conventions, build steps, rationale — written once, read every run. Each skill carries YAML frontmatter (`name`, `description`) so agent tools can discover it; for Claude Code, symlink skills into `.claude/skills/` (`ln -s ../../skills/<name> .claude/skills/<name>`).
 3. **Sub-agents** — Maker and checker are separated. Defined in `.agents/`. The agent that writes is never the sole agent that grades.
 4. **Automations** — Scheduled workflows run discovery and triage without human prompting. `.github/workflows/loop-triage.yml` surfaces open laundry-list items as a recurring issue.
 5. **Worktrees** — For parallel work, use `git worktree` isolation so concurrent agents don't collide.
@@ -66,6 +66,19 @@ STATE.md → read memory → plan → implement → verify → update STATE.md �
 ### The Two Human Gates
 
 The human engineers the loop, not its per-cycle prompter. Exactly two gates: **Frame** (clarifying questions before code, when ambiguous or on the STOP list) and **Ship** (the PR, with verification evidence). Between them, run to completion — `SESSION.md` defines both gates.
+
+### Session Ritual
+
+Follow the phased operating loop in `SESSION.md` — it is the canonical session protocol.
+
+In summary:
+1. **Sync**: `git pull origin <branch>`.
+2. **Start**: Read `STATE.md`, `docs/laundry_list.md`, `docs/done_laundry_list.md`. Check `.loop-kit-version` against the latest loop-kit commit/release.
+3. **Phase 1-3**: Gather evidence, build candidates, commit to one item (Frame gate).
+4. **Phase 4-5**: Implement, verify, review, evaluate.
+5. **Bookkeeping**: Update `STATE.md`, move completed items from `docs/laundry_list.md` to `docs/done_laundry_list.md`.
+6. **Ship**: Feature branch, conventional commit, PR with verification evidence (Ship gate).
+7. **Loop**: If exit criteria not met, return to step 2.
 
 ### Red Flags
 
@@ -76,6 +89,7 @@ These thoughts mean stop — you're rationalizing:
 | "This is too simple to need acceptance criteria" | Simple items with unexamined assumptions are where rework comes from. Two lines is enough. |
 | "I'll just fix this adjacent thing while I'm here" | Scope creep breaks surgical changes. Add it to `docs/laundry_list.md` instead. |
 | "Tests probably pass" / "this should work now" | Evidence before claims. Run them. |
+| "Tests pass, so it works" | Tests prove the code satisfies its own assertions, not that the change is wired to reality. Run the artifact and watch the change happen at its surface (`skills/surface-verification/SKILL.md`). |
 | "I'll check with the human if this looks good so far" | Mid-loop permission-seeking re-inserts the human into the cycle. Verify against the criteria and ship. |
 | "The status says done, so it's done" | Statuses go stale. Verify against the code. |
 | "I'll update the docs in a follow-up" | The follow-up never comes. Same change, same PR. |

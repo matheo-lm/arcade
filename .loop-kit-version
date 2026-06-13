@@ -1,0 +1,7 @@
+# loop-kit upstream tracking
+# This file records the last-synced commit from the loop-kit repo.
+# Every session start checks for newer commits/releases and flags drift.
+#
+# upstream: https://github.com/matheo-lm/loop-kit
+# current:  fe4f47bf92176b0c336f12b736cb0a7ed1dea35c
+# date:     2026-06-12

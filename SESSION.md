@@ -45,6 +45,11 @@ Before proposing work:
 
 3. Treat all task metadata as potentially stale. Never trust status fields, dependency declarations, or implementation assumptions until verified in code.
 
+4. Check loop-kit version:
+   - Fetch the latest from `https://api.github.com/repos/matheo-lm/loop-kit/commits/main` (or the latest release at `https://api.github.com/repos/matheo-lm/loop-kit/releases/latest` when releases exist).
+   - Compare with `.loop-kit-version` in the project root.
+   - If the tracked version differs from latest, flag it in `STATE.md` as an infra finding — the project may be missing upstream updates. Reconcile by diffing the loop-kit template files against what's in the project.
+
 ---
 
 ## Phase 2: Build Candidates
@@ -122,6 +127,19 @@ Run the project's validation:
 
 Do not fix unrelated failures.
 
+### Observe at the surface
+Validation proves the change compiles and satisfies its own assertions — not
+that it works. For every change with a runtime surface, follow
+`skills/surface-verification/SKILL.md`: run the artifact, drive it to where
+the changed code executes, capture what you observe (output, response,
+screenshot), and probe at least once off the happy path. The capture is the
+evidence that goes in the PR.
+
+If the observation contradicts the claim, that is the loop working — report
+it plainly, fix, and re-observe. If no runtime surface exists (docs-only,
+types-only, tests-only), state "no runtime surface" explicitly instead of
+substituting a test run.
+
 ### Review (maker ≠ checker)
 The work is graded by a pass that did not write it:
 - Dispatch `.agents/reviewer.md` as a sub-agent to review the diff against the acceptance criteria. If your tool has no sub-agents, re-read the full diff cold against the criteria before declaring done.
@@ -167,6 +185,7 @@ If new work is discovered:
 Open a pull request (the Ship gate):
 - Concise summary of what changed and why.
 - Verification evidence in the body — the commands you ran and their output, not assertions.
+- Surface observation in the body — what you watched the running artifact do, with the capture (or "no runtime surface").
 - If anything failed or was skipped, say so plainly.
 
 The human reviews the finished PR, not intermediate artifacts.
@@ -179,6 +198,7 @@ Do not declare success until ALL are true:
 - acceptance criteria satisfied
 - dependencies verified
 - validation passing (typecheck, lint, tests)
+- surface observation captured (or "no runtime surface" stated explicitly)
 - reviewer findings addressed
 - no new work left undocumented
 - bookkeeping updated

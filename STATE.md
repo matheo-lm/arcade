@@ -2,10 +2,13 @@
 > last updated: 2026-06-13
 
 ## current goal
-Fruit Stacker merge/collision tests complete — `mergeFruits` and `resolveCollisionPair` extracted as pure functions with 13 unit tests (39 total Fruit Stacker game-logic tests). 10 items remain.
+loop-kit doctrine sync complete — surface-verification skill, design skill, Observe at the surface in SESSION.md, missing red flags, Session Ritual, loop-kit version tracking.
 
 ## progress
-- [x] loop-kit infrastructure setup complete
+- [x] loop-kit infrastructure setup complete (initial bootstrap)
+- [x] loop-kit doctrine sync — added missing skills (design, surface-verification), updated SESSION.md (Observe at the surface, Ship/exit criteria), updated AGENTS.md (red flags, Session Ritual, expanded skill descs, loop-kit version check), created `.loop-kit-version` tracking
+
+## progress
 - [x] Codebase audit complete (36 items)
 - [x] Bug 1: fruit-stacker Google Fonts link added
 - [x] Bug 2: fruit-stacker fallbackSpriteUrl changed to .svg (10 tiers)
@@ -24,6 +27,7 @@ Fruit Stacker merge/collision tests complete — `mergeFruits` and `resolveColli
 
 ## findings
 - **Fruit Stacker testability complete**: All 6 target functions extracted — 39 game-logic tests (4 base + 26 batch 1 + 13 batch 2) + 4 config tests = 43 Fruit Stacker tests. Remaining untested: game-loop integration and rendering (not suitable for unit testing).
-- **Laundry list**: 1 Critical testing item fully closed (Fruit Stacker merge/collision). 10 items remain.
+- **Loop-kit doctrine sync complete**: Added 2 missing skills (design, surface-verification), updated SESSION.md with Observe at the surface doctrine and loop-kit version check in Phase 1, updated AGENTS.md with missing red flag, Session Ritual, and loop-kit check instruction. Created `.loop-kit-version` tracking file at `fe4f47bf`.
+- **Laundry list**: 11 items remain (10 prior + 1 new: loop-kit drift tracking).
 - **Test coverage**: 133 total tests (11 files). Fruit Stacker now has 39 game-logic + 4 config tests.
 
