@@ -17,7 +17,7 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 *(none open)*
 
 ## testing & coverage
-- [ ] **[Low]** Fruit Stacker has 0 E2E coverage (only unit tests) — flagship game missing surface verification
+- [x] **[Low]** Fruit Stacker E2E smoke test — 3 tests covering shell rendering, drop mechanics via exposed API, and game-over overlay flow (PR #41)
 - [ ] **[Med]** Shape Builder E2E smoke test created but not verified yet (needs Playwright to confirm)
 
 ## localization
@@ -43,12 +43,11 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 | bugs | 0 |
 | gameplay | 1 |
 | code quality | 0 |
-| testing & coverage | 2 |
+| testing & coverage | 1 |
 | localization | 0 |
 | polish | 1 |
 | config & infra | 5 |
-| **total** | **9** |
+| **total** | **8** |
 
 ## known issues
-- **Shape Builder**: game code + tests exist in working tree but are untracked (never committed). Manifest still says `"placeholder"`.
-- **Shape Builder i18n**: 7 pre-existing typecheck errors — `gameHintShapeBuilder`, `shapeBuilderPalette`, etc. not in `TranslationDictionary` type.
+*(none open)*
