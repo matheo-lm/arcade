@@ -1,8 +1,21 @@
-import { describe, expect, test } from "vitest";
-import { resolveLocale } from "@shared/i18n";
+import { describe, expect, test, vi, beforeEach } from "vitest";
+import { createI18n, resolveLocale } from "@shared/i18n";
 import { dictionaries } from "@shared/i18n/dictionaries";
 import enLocale from "../../public/locales/en/common.json";
 import esLocale from "../../public/locales/es/common.json";
+import type { TranslationKey } from "@shared/types/i18n";
+
+const { mockGetLocale, mockSetLocale } = vi.hoisted(() => ({
+  mockGetLocale: vi.fn<() => "en" | "es">(() => "en"),
+  mockSetLocale: vi.fn()
+}));
+
+vi.mock("@shared/storage/platformStorage", () => ({
+  platformStorage: {
+    getLocale: mockGetLocale,
+    setLocale: mockSetLocale
+  }
+}));
 
 describe("i18n locale resolution", () => {
   test("prioritizes query param over other sources", () => {
@@ -77,5 +90,89 @@ describe("i18n runtime t()", () => {
     const enVal = dictionaries.en[key];
     const fallback = esVal ?? enVal;
     expect(fallback).toBe(enVal);
+  });
+});
+
+describe("createI18n runtime", () => {
+  beforeEach(() => {
+    mockGetLocale.mockReset().mockReturnValue("en");
+    mockSetLocale.mockReset();
+  });
+
+  test("initializes with English locale by default", () => {
+    const i18n = createI18n();
+    expect(i18n.locale).toBe("en");
+  });
+
+  test("calls getLocale during initialization", () => {
+    createI18n();
+    expect(mockGetLocale).toHaveBeenCalled();
+  });
+
+  test("calls setLocale with resolved locale during init", () => {
+    createI18n();
+    expect(mockSetLocale).toHaveBeenCalledWith("en");
+  });
+
+  test("initializes with stored Spanish locale", () => {
+    mockGetLocale.mockReturnValue("es");
+    const i18n = createI18n();
+    expect(i18n.locale).toBe("es");
+    expect(mockSetLocale).toHaveBeenCalledWith("es");
+  });
+
+  test("query param overrides stored locale", () => {
+    mockGetLocale.mockReturnValue("en");
+    const i18n = createI18n("?lang=es");
+    expect(i18n.locale).toBe("es");
+  });
+
+  test("t() returns English value when locale is en", () => {
+    const i18n = createI18n();
+    expect(i18n.t("appTitle")).toBe("arcade");
+    expect(i18n.t("gameNext")).toBe("next");
+  });
+
+  test("t() returns Spanish value when locale is es", () => {
+    mockGetLocale.mockReturnValue("es");
+    const i18n = createI18n();
+    expect(i18n.t("gameNext")).toBe("siguiente");
+  });
+
+  test("t() falls back to raw key when missing from all dictionaries", () => {
+    const i18n = createI18n();
+    const unknown = "unknown_key" as TranslationKey;
+    expect(i18n.t(unknown)).toBe("unknown_key");
+  });
+
+  test("setLocale updates runtime locale", () => {
+    const i18n = createI18n();
+    expect(i18n.locale).toBe("en");
+    i18n.setLocale("es");
+    expect(i18n.locale).toBe("es");
+  });
+
+  test("setLocale persists via platformStorage", () => {
+    const i18n = createI18n();
+    i18n.setLocale("es");
+    expect(mockSetLocale).toHaveBeenCalledWith("es");
+  });
+
+  test("t() reflects locale change after setLocale", () => {
+    const i18n = createI18n();
+    expect(i18n.t("gameNext")).toBe("next");
+    i18n.setLocale("es");
+    expect(i18n.t("gameNext")).toBe("siguiente");
+    i18n.setLocale("en");
+    expect(i18n.t("gameNext")).toBe("next");
+  });
+
+  test("exposes I18nRuntime interface", () => {
+    const i18n = createI18n();
+    expect(i18n).toHaveProperty("locale");
+    expect(i18n).toHaveProperty("t");
+    expect(i18n).toHaveProperty("setLocale");
+    expect(typeof i18n.t).toBe("function");
+    expect(typeof i18n.setLocale).toBe("function");
   });
 });
