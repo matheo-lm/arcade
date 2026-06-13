@@ -32,7 +32,7 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 - [x] Improve mobile touch feedback on game cards
 
 ## config & infra
-- [ ] **[Low]** Playwright config uses port 4173 (preview default) with `npm run dev` — confusion between dev/preview
+- [x] **[Low]** Playwright config uses port 4173 (preview default) with `npm run dev` — confusion between dev/preview
 - [ ] **[Low]** Missing `screenshots` in manifest.webmanifest (`categories` already added)
 - [ ] **[Low]** `loop-kit` drift tracking — reconcile new skills/agents/doctrine against upstream at https://github.com/matheo-lm/loop-kit (`.loop-kit-version` tracks current sync point)
 
@@ -47,5 +47,5 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 | testing & coverage | 2 |
 | localization | 0 |
 | polish | 1 |
-| config & infra | 3 |
-| **total** | **9** |
+| config & infra | 2 |
+| **total** | **8** |
