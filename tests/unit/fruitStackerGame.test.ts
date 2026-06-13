@@ -1,10 +1,12 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import {
   clamp,
   type FruitState,
   resolveWorldBounds,
   hasImmediateTopLineBreach,
-  hasPumpkinTouch
+  hasPumpkinTouch,
+  mergeFruits,
+  resolveCollisionPair
 } from "@games/fruit-stacker/game";
 import { FRUIT_TIERS } from "@games/fruit-stacker/config";
 
@@ -195,5 +197,153 @@ describe("hasPumpkinTouch", () => {
       pumpkin(100 + pumpkinR * 1.5, 100)
     ];
     expect(hasPumpkinTouch(pumpkins)).toBe(true);
+  });
+});
+
+describe("mergeFruits", () => {
+  test("returns MergeResult when same type, non-terminal, close enough", () => {
+    const a = makeFruit({ type: 0, x: 100, y: 100 });
+    const b = makeFruit({ type: 0, x: 106, y: 100 });
+    const targetDistance = cherryR * 2;
+    const distance = 6;
+
+    const result = mergeFruits(a, b, distance, targetDistance);
+    expect(result).not.toBeNull();
+    expect(result!.mergedType).toBe(1);
+  });
+
+  test("returns null for different types", () => {
+    const a = makeFruit({ type: 0, x: 100, y: 100 });
+    const b = makeFruit({ type: 1, x: 105, y: 100 });
+    const targetDistance = FRUIT_TIERS[0].r + FRUIT_TIERS[1].r;
+    const distance = 5;
+
+    expect(mergeFruits(a, b, distance, targetDistance)).toBeNull();
+  });
+
+  test("returns null for terminal type (pumpkin)", () => {
+    const terminalType = FRUIT_TIERS.length - 1;
+    const r = FRUIT_TIERS[terminalType].r;
+    const a = makeFruit({ type: terminalType, x: 100, y: 100 });
+    const b = makeFruit({ type: terminalType, x: 100 + r, y: 100 });
+    const targetDistance = r * 2;
+    const distance = r;
+
+    expect(mergeFruits(a, b, distance, targetDistance)).toBeNull();
+  });
+
+  test("returns null when distance exceeds 0.98 * targetDistance", () => {
+    const a = makeFruit({ type: 0, x: 100, y: 100 });
+    const b = makeFruit({ type: 0, x: 100, y: 100 + cherryR * 2.5 });
+    const targetDistance = cherryR * 2;
+    const distance = cherryR * 2.5;
+
+    expect(mergeFruits(a, b, distance, targetDistance)).toBeNull();
+  });
+
+  test("computes correct midpoint coordinates", () => {
+    const a = makeFruit({ type: 0, x: 100, y: 200 });
+    const b = makeFruit({ type: 0, x: 110, y: 220 });
+    const targetDistance = cherryR * 2;
+    const distance = Math.hypot(10, 20);
+
+    const result = mergeFruits(a, b, distance, targetDistance);
+    expect(result!.x).toBe(105);
+    expect(result!.y).toBe(210);
+  });
+
+  test("computes correct combined velocity", () => {
+    const a = makeFruit({ type: 0, x: 100, y: 100, vx: 2, vy: -3 });
+    const b = makeFruit({ type: 0, x: 105, y: 100, vx: -1, vy: -5 });
+    const targetDistance = cherryR * 2;
+    const distance = 5;
+
+    const result = mergeFruits(a, b, distance, targetDistance);
+    expect(result!.vx).toBe((2 + -1) * 0.35);
+    expect(result!.vy).toBe(Math.min(-3, -5) - 0.65);
+  });
+
+  test("does not mutate input fruits", () => {
+    const a = makeFruit({ type: 0, x: 100, y: 100, vx: 2, vy: 0 });
+    const b = makeFruit({ type: 0, x: 105, y: 100, vx: -1, vy: 0 });
+    const targetDistance = cherryR * 2;
+    const distance = 5;
+
+    const a0 = { ...a };
+    const b0 = { ...b };
+    mergeFruits(a, b, distance, targetDistance);
+    expect(a).toEqual(a0);
+    expect(b).toEqual(b0);
+  });
+});
+
+describe("resolveCollisionPair", () => {
+  test("does nothing when fruits are far apart", () => {
+    const a = makeFruit({ type: 0, x: 0, y: 0 });
+    const b = makeFruit({ type: 1, x: 500, y: 500 });
+    const mergeFn = vi.fn();
+
+    resolveCollisionPair(a, b, mergeFn);
+    expect(a.x).toBe(0);
+    expect(b.x).toBe(500);
+    expect(mergeFn).not.toHaveBeenCalled();
+  });
+
+  test("calls mergeFn when fruits overlap and returns early on success", () => {
+    const a = makeFruit({ type: 0, x: 100, y: 100 });
+    const b = makeFruit({ type: 0, x: 105, y: 100 });
+    const mergeFn = vi.fn().mockReturnValue(true);
+
+    resolveCollisionPair(a, b, mergeFn);
+    expect(mergeFn).toHaveBeenCalledOnce();
+    expect(a.x).toBe(100);
+    expect(b.x).toBe(105);
+  });
+
+  test("handles zero distance edge case without crash", () => {
+    const a = makeFruit({ type: 0, x: 100, y: 100 });
+    const b = makeFruit({ type: 0, x: 100, y: 100 });
+    const mergeFn = vi.fn().mockReturnValue(false);
+
+    expect(() => resolveCollisionPair(a, b, mergeFn)).not.toThrow();
+    expect(mergeFn).toHaveBeenCalled();
+    expect(a.x).not.toBeNaN();
+    expect(a.y).not.toBeNaN();
+    expect(b.x).not.toBeNaN();
+    expect(b.y).not.toBeNaN();
+  });
+
+  test("pushes overlapping different-type fruits apart when no merge", () => {
+    const a = makeFruit({ type: 0, x: 100, y: 100 });
+    const b = makeFruit({ type: 1, x: 100, y: 100 });
+    const mergeFn = vi.fn().mockReturnValue(false);
+
+    resolveCollisionPair(a, b, mergeFn);
+    expect(mergeFn).toHaveBeenCalled();
+    expect(a.x).not.toBe(100);
+    expect(b.x).not.toBe(100);
+  });
+
+  test("applies impulse for approaching fruits and not for separating", () => {
+    const a = makeFruit({ type: 0, x: 100, y: 100, vx: 5, vy: 0 });
+    const b = makeFruit({ type: 1, x: 110, y: 100, vx: -5, vy: 0 });
+    const mergeFn = vi.fn().mockReturnValue(false);
+
+    resolveCollisionPair(a, b, mergeFn);
+    expect(a.vx).toBeLessThan(5);
+    expect(b.vx).toBeGreaterThan(-5);
+  });
+
+  test("integration with mergeFruits: detects merge for touching same-type fruits", () => {
+    const a = makeFruit({ type: 0, x: 100, y: 100 });
+    const b = makeFruit({ type: 0, x: 100 + cherryR * 1.5, y: 100 });
+    const wrapMerge = (a: FruitState, b: FruitState, d: number, td: number): boolean =>
+      mergeFruits(a, b, d, td) !== null;
+
+    expect(resolveCollisionPair(a, b, wrapMerge)).toBeUndefined();
+    expect(a.x).toBe(100);
+    expect(b.x).toBe(100 + cherryR * 1.5);
+    expect(a.merged).toBe(false);
+    expect(b.merged).toBe(false);
   });
 });

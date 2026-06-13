@@ -1,8 +1,8 @@
 # state
-> last updated: 2026-06-12
+> last updated: 2026-06-13
 
 ## current goal
-Extract Fruit Stacker pure game-logic functions and add 26 unit tests for top-line breach detection, pumpkin touch detection, world bounds, and clamp — done. 11 items remain (one partially complete).
+Fruit Stacker merge/collision tests complete — `mergeFruits` and `resolveCollisionPair` extracted as pure functions with 13 unit tests (39 total Fruit Stacker game-logic tests). 10 items remain.
 
 ## progress
 - [x] loop-kit infrastructure setup complete
@@ -19,10 +19,11 @@ Extract Fruit Stacker pure game-logic functions and add 26 unit tests for top-li
 - [x] aria-label fix: localized badges close button with closeModal key
 - [x] Security headers: CSP + Permissions-Policy added to vercel.json
 - [x] Laundry list cleanup: 8 stale items moved to done
-- [x] Fruit Stacker unit tests: extracted `clamp`, `resolveWorldBounds`, `hasImmediateTopLineBreach`, `hasPumpkinTouch` as exported pure functions; 26 tests covering top-line, pumpkin, world bounds
+- [x] Fruit Stacker unit tests batch 1: extracted `clamp`, `resolveWorldBounds`, `hasImmediateTopLineBreach`, `hasPumpkinTouch` as exported pure functions; 26 tests covering top-line, pumpkin, world bounds
+- [x] Fruit Stacker unit tests batch 2: extracted `mergeFruits` (pure decision) and `resolveCollisionPair` (with mergeFn callback); local `tryMerge`/`resolveCollision` delegate to exported versions; 13 new tests covering merge logic, collision physics, zero-distance edge case, impulse
 
 ## findings
-- **Fruit Stacker testability**: Extracted 4 pure functions from the 1049-line closure. 26 tests now cover `hasImmediateTopLineBreach`, `hasPumpkinTouch`, `resolveWorldBounds`, and `clamp`. Remaining untested: merge logic (`tryMerge`) and collision resolution (`resolveCollision`) — these need side-effect separation.
-- **Laundry list**: 1 item partially completed (Fruit Stacker unit tests — top-line, pumpkin, world bounds now covered; merge/collision remain). 10 items remain.
-- **Test coverage**: 120 total tests (11 files). Fruit Stacker now has 26 game-logic tests + 4 config tests.
+- **Fruit Stacker testability complete**: All 6 target functions extracted — 39 game-logic tests (4 base + 26 batch 1 + 13 batch 2) + 4 config tests = 43 Fruit Stacker tests. Remaining untested: game-loop integration and rendering (not suitable for unit testing).
+- **Laundry list**: 1 Critical testing item fully closed (Fruit Stacker merge/collision). 10 items remain.
+- **Test coverage**: 133 total tests (11 files). Fruit Stacker now has 39 game-logic + 4 config tests.
 
