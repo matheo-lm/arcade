@@ -26,21 +26,9 @@
     "express ideas through guided art tasks."
   ],
   "difficultyPresets": {
-    "8": {
-      "dropCooldownMs": 0,
-      "goalScore": 12,
-      "maxObjectsHint": 12
-    },
-    "4-5": {
-      "dropCooldownMs": 0,
-      "goalScore": 4,
-      "maxObjectsHint": 7
-    },
-    "6-7": {
-      "dropCooldownMs": 0,
-      "goalScore": 8,
-      "maxObjectsHint": 10
-    }
+    "4-5": {},
+    "6-7": {},
+    "8": {}
   },
   "cardIconFallback": "/assets/game-icons/color-craft.svg"
 }
