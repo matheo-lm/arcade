@@ -26,21 +26,9 @@
     "strengthen ordering and pattern transfer."
   ],
   "difficultyPresets": {
-    "8": {
-      "dropCooldownMs": 0,
-      "goalScore": 13,
-      "maxObjectsHint": 9
-    },
-    "4-5": {
-      "dropCooldownMs": 0,
-      "goalScore": 5,
-      "maxObjectsHint": 5
-    },
-    "6-7": {
-      "dropCooldownMs": 0,
-      "goalScore": 9,
-      "maxObjectsHint": 7
-    }
+    "4-5": {},
+    "6-7": {},
+    "8": {}
   },
   "cardIconFallback": "/assets/game-icons/pattern-parade.svg"
 }

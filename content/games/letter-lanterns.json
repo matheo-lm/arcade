@@ -26,21 +26,9 @@
     "match visual letter forms quickly."
   ],
   "difficultyPresets": {
-    "8": {
-      "dropCooldownMs": 0,
-      "goalScore": 18,
-      "maxObjectsHint": 10
-    },
-    "4-5": {
-      "dropCooldownMs": 0,
-      "goalScore": 7,
-      "maxObjectsHint": 6
-    },
-    "6-7": {
-      "dropCooldownMs": 0,
-      "goalScore": 12,
-      "maxObjectsHint": 8
-    }
+    "4-5": {},
+    "6-7": {},
+    "8": {}
   },
   "cardIconFallback": "/assets/game-icons/letter-lanterns.svg"
 }

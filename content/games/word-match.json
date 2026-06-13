@@ -26,21 +26,9 @@
     "connect words with concrete visuals."
   ],
   "difficultyPresets": {
-    "8": {
-      "dropCooldownMs": 0,
-      "goalScore": 13,
-      "maxObjectsHint": 10
-    },
-    "4-5": {
-      "dropCooldownMs": 0,
-      "goalScore": 5,
-      "maxObjectsHint": 6
-    },
-    "6-7": {
-      "dropCooldownMs": 0,
-      "goalScore": 9,
-      "maxObjectsHint": 8
-    }
+    "4-5": {},
+    "6-7": {},
+    "8": {}
   },
   "cardIconFallback": "/assets/game-icons/word-match.svg"
 }

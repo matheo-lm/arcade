@@ -26,21 +26,9 @@
     "recall order with visual cues."
   ],
   "difficultyPresets": {
-    "8": {
-      "dropCooldownMs": 0,
-      "goalScore": 12,
-      "maxObjectsHint": 8
-    },
-    "4-5": {
-      "dropCooldownMs": 0,
-      "goalScore": 4,
-      "maxObjectsHint": 4
-    },
-    "6-7": {
-      "dropCooldownMs": 0,
-      "goalScore": 8,
-      "maxObjectsHint": 6
-    }
+    "4-5": {},
+    "6-7": {},
+    "8": {}
   },
   "cardIconFallback": "/assets/game-icons/memory-trails.svg"
 }

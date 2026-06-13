@@ -26,21 +26,9 @@
     "sort words by first phoneme."
   ],
   "difficultyPresets": {
-    "8": {
-      "dropCooldownMs": 0,
-      "goalScore": 16,
-      "maxObjectsHint": 10
-    },
-    "4-5": {
-      "dropCooldownMs": 0,
-      "goalScore": 6,
-      "maxObjectsHint": 6
-    },
-    "6-7": {
-      "dropCooldownMs": 0,
-      "goalScore": 11,
-      "maxObjectsHint": 8
-    }
+    "4-5": {},
+    "6-7": {},
+    "8": {}
   },
   "cardIconFallback": "/assets/game-icons/phonics-pop.svg"
 }
