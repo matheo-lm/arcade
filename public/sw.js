@@ -2,7 +2,16 @@ const CACHE_NAME = "berries-arcade-shell-v1";
 const SHELL_ASSETS = [
   "/",
   "/manifest.webmanifest",
-  "/assets/icon.svg"
+  "/assets/icon.svg",
+  "/games/fruit-stacker/index.html",
+  "/games/number-garden/index.html",
+  "/games/shape-builder/index.html",
+  "/games/pattern-parade/index.html",
+  "/games/memory-trails/index.html",
+  "/games/letter-lanterns/index.html",
+  "/games/phonics-pop/index.html",
+  "/games/word-match/index.html",
+  "/games/color-craft/index.html"
 ];
 
 const isSameOrigin = (request) => {

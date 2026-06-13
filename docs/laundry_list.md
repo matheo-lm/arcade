@@ -18,7 +18,7 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 
 ## testing & coverage
 - [x] **[Low]** Fruit Stacker E2E smoke test — 3 tests covering shell rendering, drop mechanics via exposed API, and game-over overlay flow (PR #41)
-- [ ] **[Med]** Shape Builder E2E smoke test created but not verified yet (needs Playwright to confirm)
+- [x] **[Med]** Shape Builder E2E smoke test created and verified in PR #40 (7/7 E2E tests passed)
 
 ## localization
 *(none open)*
@@ -30,10 +30,10 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 
 ## config & infra
 - [ ] **[Low]** Missing `screenshots` in manifest.webmanifest (`categories` already added)
-- [ ] **[Low]** `loop-kit` drift tracking — reconcile new skills/agents/doctrine against upstream at https://github.com/matheo-lm/loop-kit (`.loop-kit-version` tracks current sync point)
-- [ ] **[Low]** Service worker only precaches 3 files — no game pages or JS chunks cached (online-first, no app-shell pattern)
+- [x] **[Low]** `loop-kit` drift tracking — no drift (upstream HEAD `fe4f47b` matches `.loop-kit-version` sync point)
+- [x] **[Low]** Service worker only precaches 3 files — added all 9 game HTML pages to precache (now 12 files at install)
 - [ ] **[Low]** Number Garden has no sound effects (fruit-stacker and shape-builder do)
-- [ ] **[Low]** No CI badge in README
+- [x] **[Low]** No CI badge in README — added badge linking to GitHub Actions workflow
 
 ---
 
@@ -43,11 +43,11 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 | bugs | 0 |
 | gameplay | 1 |
 | code quality | 0 |
-| testing & coverage | 1 |
+| testing & coverage | 0 |
 | localization | 0 |
 | polish | 1 |
-| config & infra | 5 |
-| **total** | **8** |
+| config & infra | 2 |
+| **total** | **4** |
 
 ## known issues
 *(none open)*
