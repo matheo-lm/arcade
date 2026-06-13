@@ -35,3 +35,7 @@ completed items, archived. never deleted — only moved from `docs/laundry_list.
 | 2026-06-13 | [Low] Stale SW cache name (`xs-arcade-shell-v3` → `berries-arcade-shell-v1`) | Changed cache name to match project name (PR #39) |
 | 2026-06-13 | [Low] Speculative config in placeholder manifests | Removed `dropCooldownMs`/`goalScore`/`maxObjectsHint` from 6 placeholder manifests — only meaningful for playable games (PR #39) |
 | 2026-06-13 | **[Low] Fruit Stacker E2E smoke test** | Added 3 E2E tests: shell rendering + settings menu + back navigation; drop mechanics via `advanceTime`/`render_game_to_text`; game-over loop via canvas `PointerEvent` dispatch + overlay verify + play-again reset. 8 total E2E tests (was 5). (PR #41) |
+| 2026-06-13 | **[Med] Shape Builder E2E smoke test verified** | Shape Builder E2E tests created in PR #40 and verified: 7/7 E2E tests passed including shell/navigation and palette selection + canvas interaction |
+| 2026-06-13 | **[Low] SW precache game pages** | Added all 9 game HTML page paths to SHELL_ASSETS — now 12 files precached at install (was 3) |
+| 2026-06-13 | **[Low] CI badge in README** | Added `![CI](https://github.com/matheo-lm/arcade/actions/workflows/ci.yml/badge.svg)` badge to README |
+| 2026-06-13 | **[Low] loop-kit drift tracking** | Checked upstream `fe4f47b` — matches `.loop-kit-version` sync point, no drift detected |

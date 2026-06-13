@@ -92,7 +92,10 @@ npm run test:e2e
 ```
 
 ## CI
-- GitHub Actions workflow: `/Users/m/Desktop/berries/.github/workflows/ci.yml`
+
+![CI](https://github.com/matheo-lm/arcade/actions/workflows/ci.yml/badge.svg)
+
+- GitHub Actions workflow: `/Users/m/Desktop/github/berries/.github/workflows/ci.yml`
 - Runs on pushes to `main` and all pull requests.
 - Pipeline steps: `typecheck`, `test`, `build`, `test:e2e`.
 
