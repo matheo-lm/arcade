@@ -64,5 +64,12 @@
   "badgesModalSub": "¡juega juegos para desbloquear insignias geniales!",
   "badgeLocked": "bloqueada",
   "badgeUnlocked": "desbloqueada el",
-  "closeModal": "cerrar modal"
+  "closeModal": "cerrar modal",
+  "gameHintShapeBuilder": "toca o haz clic en una forma de la paleta, luego toca el contorno que coincide en el lienzo para colocarla.",
+  "shapeBuilderPalette": "formas",
+  "shapeBuilderCircle": "circulo",
+  "shapeBuilderSquare": "cuadrado",
+  "shapeBuilderTriangle": "triangulo",
+  "shapeBuilderRectangle": "rectangulo",
+  "shapeBuilderDiamond": "diamante"
 }

@@ -64,5 +64,12 @@
   "badgesModalSub": "play games to unlock cool badges!",
   "badgeLocked": "locked",
   "badgeUnlocked": "unlocked on",
-  "closeModal": "close modal"
+  "closeModal": "close modal",
+  "gameHintShapeBuilder": "tap or click a shape from the palette, then tap the matching outline on the canvas to place it.",
+  "shapeBuilderPalette": "shapes",
+  "shapeBuilderCircle": "circle",
+  "shapeBuilderSquare": "square",
+  "shapeBuilderTriangle": "triangle",
+  "shapeBuilderRectangle": "rectangle",
+  "shapeBuilderDiamond": "diamond"
 }
