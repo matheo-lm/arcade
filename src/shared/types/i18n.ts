@@ -67,6 +67,13 @@ export interface TranslationDictionary {
   badgeLocked: string;
   badgeUnlocked: string;
   closeModal: string;
+  gameHintShapeBuilder: string;
+  shapeBuilderPalette: string;
+  shapeBuilderCircle: string;
+  shapeBuilderSquare: string;
+  shapeBuilderTriangle: string;
+  shapeBuilderRectangle: string;
+  shapeBuilderDiamond: string;
 }
 
 export type TranslationKey = keyof TranslationDictionary;

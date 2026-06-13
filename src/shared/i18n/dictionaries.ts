@@ -67,7 +67,14 @@ export const dictionaries: Record<LocaleCode, TranslationDictionary> = {
     badgesModalSub: "play games to unlock cool badges!",
     badgeLocked: "locked",
     badgeUnlocked: "unlocked on",
-    closeModal: "close modal"
+    closeModal: "close modal",
+    gameHintShapeBuilder: "tap or click a shape from the palette, then tap the matching outline on the canvas to place it.",
+    shapeBuilderPalette: "shapes",
+    shapeBuilderCircle: "circle",
+    shapeBuilderSquare: "square",
+    shapeBuilderTriangle: "triangle",
+    shapeBuilderRectangle: "rectangle",
+    shapeBuilderDiamond: "diamond"
   },
   es: {
     appTitle: "arcade",
@@ -135,6 +142,13 @@ export const dictionaries: Record<LocaleCode, TranslationDictionary> = {
     badgesModalSub: "¡juega juegos para desbloquear insignias geniales!",
     badgeLocked: "bloqueada",
     badgeUnlocked: "desbloqueada el",
-    closeModal: "cerrar modal"
+    closeModal: "cerrar modal",
+    gameHintShapeBuilder: "toca o haz clic en una forma de la paleta, luego toca el contorno que coincide en el lienzo para colocarla.",
+    shapeBuilderPalette: "formas",
+    shapeBuilderCircle: "circulo",
+    shapeBuilderSquare: "cuadrado",
+    shapeBuilderTriangle: "triangulo",
+    shapeBuilderRectangle: "rectangulo",
+    shapeBuilderDiamond: "diamante"
   }
 };

@@ -4,9 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>shape builder | arcade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
-<body data-game-slug="shape-builder">
-  <main id="placeholderApp" class="app-shell"></main>
-  <script type="module" src="/src/games/placeholder/main.ts"></script>
+<body>
+  <main class="app-shell game-shell">
+    <div id="gameHeaderMount"></div>
+
+    <section class="sb-board" id="sbBoard" aria-label="shape builder play area">
+      <canvas id="sbCanvas" width="480" height="480"></canvas>
+      <div id="sbPalette"></div>
+      <div class="overlay" id="gameOver">
+        <div>
+          <h2 id="gameOverTitle">target reached!</h2>
+          <p id="finalScore">you scored 0</p>
+          <button id="playAgainBtn" type="button">play again</button>
+        </div>
+      </div>
+    </section>
+
+    <p class="hint" id="hint">drag shapes onto the matching outlines to build the picture.</p>
+  </main>
+
+  <script type="module" src="/src/games/shape-builder/main.ts"></script>
 </body>
 </html>
