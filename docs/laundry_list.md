@@ -29,7 +29,7 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 
 ## polish
 - [x] Add loading states between game transitions — spinner overlay shown on card action click before navigation
-- [ ] Improve mobile touch feedback on game cards
+- [x] Improve mobile touch feedback on game cards
 
 ## config & infra
 - [ ] **[Low]** Playwright config uses port 4173 (preview default) with `npm run dev` — confusion between dev/preview
@@ -46,6 +46,6 @@ we know about. nothing here gets deleted — only moved to done when fixed.
 | code quality | 1 |
 | testing & coverage | 2 |
 | localization | 0 |
-| polish | 2 |
+| polish | 1 |
 | config & infra | 3 |
-| **total** | **10** |
+| **total** | **9** |
