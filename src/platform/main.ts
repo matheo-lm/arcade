@@ -10,7 +10,7 @@ import { bindSettingsMenuEvents, renderSettingsMenu, type SettingsMenuConfig } f
 import type { AgeBand, GameManifest, SkillTag } from "@shared/types/game";
 import { badgeDefinitions } from "@shared/badges/badgeDefs";
 
-const escapeHtml = (s: string): string =>
+export const escapeHtml = (s: string): string =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 
 const app = document.getElementById("app");
@@ -83,53 +83,69 @@ const createProfile = (): void => {
   platformStorage.setActiveProfile(profile.id);
 };
 
-const isLocalAssetPath = (value: string | undefined): boolean => !!value && value.startsWith("/assets/");
+export const isLocalAssetPath = (value: string | undefined): boolean => !!value && value.startsWith("/assets/");
 
-const resolveGameIcon = (game: GameManifest): string => {
+export const resolveGameIcon = (game: GameManifest): string => {
   if (isLocalAssetPath(game.cardIcon)) return game.cardIcon;
   if (isLocalAssetPath(game.cardIconFallback)) return game.cardIconFallback as string;
   return "/assets/icon.svg";
 };
 
-const iconMarkup = (game: GameManifest): string => {
+export const iconMarkup = (game: GameManifest): string => {
   const src = resolveGameIcon(game);
   return `<img class="card-icon-img" src="${src}" data-fallback="/assets/icon.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" />`;
 };
 
-const renderCards = (games: GameManifest[]): string =>
-  games
-    .map((game) => {
-      const playable = game.status === "playable";
-      const statusClass = playable ? "" : "status-placeholder";
-      const cardClass = playable ? "" : "coming-soon";
-      const buttonText = playable ? i18n.t("ctaPlay") : i18n.t("ctaComingSoon");
-      const statusText = playable ? i18n.t("statusPlayable") : i18n.t("statusPlaceholder");
-      const ageTags = game.ageBands.map((age) => `<span class=\"tag\">${ageLabel(age)}</span>`).join("");
-      const skillTags = game.skills.map((skill) => `<span class=\"tag\">${skillLabel(skill)}</span>`).join("");
-
-      const cardTabIndex = playable ? "" : " tabindex=\"0\"";
-      return `
+export const buildCardHtml = (
+  game: GameManifest,
+  labels: {
+    ctaText: string;
+    statusText: string;
+    ageTagsHtml: string;
+    skillTagsHtml: string;
+    localeTitle: string;
+    localeDescription: string;
+  }
+): string => {
+  const playable = game.status === "playable";
+  const statusClass = playable ? "" : "status-placeholder";
+  const cardClass = playable ? "" : "coming-soon";
+  const cardTabIndex = playable ? "" : " tabindex=\"0\"";
+  return `
         <article class="panel game-card ${cardClass}" data-game-id="${game.id}"${cardTabIndex}>
           <div class="card-top">
             <span class="card-icon" aria-hidden="true">${iconMarkup(game)}</span>
-            <span class="status-pill ${statusClass}">${statusText}</span>
+            <span class="status-pill ${statusClass}">${labels.statusText}</span>
           </div>
-          <h2>${escapeHtml(game.title[i18n.locale])}</h2>
-          <p>${escapeHtml(game.description[i18n.locale])}</p>
+          <h2>${escapeHtml(labels.localeTitle)}</h2>
+          <p>${escapeHtml(labels.localeDescription)}</p>
           <div class="card-details">
             <div class="card-tags">
-              <div class="tag-row">${ageTags}</div>
-              <div class="tag-row">${skillTags}</div>
+              <div class="tag-row">${labels.ageTagsHtml}</div>
+              <div class="tag-row">${labels.skillTagsHtml}</div>
             </div>
             <div class="card-actions">
               <a href="${game.path}">
-                <button class="button" type="button" ${playable ? "" : "disabled"}>${buttonText}</button>
+                <button class="button" type="button" ${playable ? "" : "disabled"}>${labels.ctaText}</button>
               </a>
             </div>
           </div>
         </article>
       `;
-    })
+};
+
+const renderCards = (games: GameManifest[]): string =>
+  games
+    .map((game) =>
+      buildCardHtml(game, {
+        ctaText: game.status === "playable" ? i18n.t("ctaPlay") : i18n.t("ctaComingSoon"),
+        statusText: game.status === "playable" ? i18n.t("statusPlayable") : i18n.t("statusPlaceholder"),
+        ageTagsHtml: game.ageBands.map((age) => `<span class="tag">${ageLabel(age)}</span>`).join(""),
+        skillTagsHtml: game.skills.map((skill) => `<span class="tag">${skillLabel(skill)}</span>`).join(""),
+        localeTitle: game.title[i18n.locale],
+        localeDescription: game.description[i18n.locale],
+      })
+    )
     .join("");
 
 const wireImageFallbacks = (root: ParentNode): void => {
