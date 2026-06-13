@@ -176,6 +176,75 @@ export const hasPumpkinTouch = (fruits: FruitState[]): boolean => {
   return false;
 };
 
+export interface MergeResult {
+  mergedType: number;
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+}
+
+export const mergeFruits = (
+  a: FruitState,
+  b: FruitState,
+  distance: number,
+  targetDistance: number
+): MergeResult | null => {
+  if (a.type !== b.type) return null;
+  if (a.type >= TERMINAL_TYPE_INDEX) return null;
+  if (distance > targetDistance * 0.98) return null;
+
+  const mergedType = a.type + 1;
+  const x = (a.x + b.x) * 0.5;
+  const y = (a.y + b.y) * 0.5;
+  const vx = (a.vx + b.vx) * 0.35;
+  const vy = Math.min(a.vy, b.vy) - 0.65;
+
+  return { mergedType, x, y, vx, vy };
+};
+
+export const resolveCollisionPair = (
+  a: FruitState,
+  b: FruitState,
+  mergeFn: (a: FruitState, b: FruitState, distance: number, targetDistance: number) => boolean
+): void => {
+  const ra = FRUITS[a.type].r;
+  const rb = FRUITS[b.type].r;
+  let dx = b.x - a.x;
+  let dy = b.y - a.y;
+  let distance = Math.hypot(dx, dy);
+  const targetDistance = ra + rb;
+
+  if (distance >= targetDistance) return;
+  if (distance === 0) {
+    dx = 0.0001;
+    dy = 0;
+    distance = 0.0001;
+  }
+
+  if (mergeFn(a, b, distance, targetDistance)) return;
+
+  const nx = dx / distance;
+  const ny = dy / distance;
+  const overlap = targetDistance - distance;
+  const push = overlap * 0.5;
+  a.x -= nx * push;
+  a.y -= ny * push;
+  b.x += nx * push;
+  b.y += ny * push;
+
+  const rvx = b.vx - a.vx;
+  const rvy = b.vy - a.vy;
+  const velocityAlongNormal = rvx * nx + rvy * ny;
+  if (velocityAlongNormal > 0) return;
+
+  const impulse = -(1 + 0.18) * velocityAlongNormal * 0.5;
+  a.vx -= impulse * nx;
+  a.vy -= impulse * ny;
+  b.vx += impulse * nx;
+  b.vy += impulse * ny;
+};
+
 export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi => {
   const ctx = options.canvas.getContext("2d");
   if (!ctx) throw new Error("Canvas 2D context is unavailable");
@@ -539,69 +608,29 @@ export const initFruitStacker = (options: FruitStackerOptions): FruitStackerApi 
   };
 
   const tryMerge = (a: FruitState, b: FruitState, distance: number, targetDistance: number): boolean => {
-    if (a.type !== b.type) return false;
-    if (a.type >= TERMINAL_TYPE_INDEX) return false;
-    if (distance > targetDistance * 0.98) return false;
+    const result = mergeFruits(a, b, distance, targetDistance);
+    if (!result) return false;
 
     a.merged = true;
     b.merged = true;
 
-    const mergedType = a.type + 1;
-    const x = (a.x + b.x) * 0.5;
-    const y = (a.y + b.y) * 0.5;
-    const vx = (a.vx + b.vx) * 0.35;
-    const vy = Math.min(a.vy, b.vy) - 0.65;
-    fruits.push(createFruit(mergedType, x, y, vx, vy));
+    fruits.push(createFruit(result.mergedType, result.x, result.y, result.vx, result.vy));
 
-    const points = FRUITS[mergedType].points;
+    const points = FRUITS[result.mergedType].points;
     score += points;
     updateScoreUi();
-    addEffect(x, y, `+${points}`);
-    playMergeSfx(mergedType);
+    addEffect(result.x, result.y, `+${points}`);
+    playMergeSfx(result.mergedType);
 
-    if (mergedType === PUMPKIN_TYPE_INDEX) {
-      spawnPumpkinMergeCelebration(x, y);
+    if (result.mergedType === PUMPKIN_TYPE_INDEX) {
+      spawnPumpkinMergeCelebration(result.x, result.y);
     }
 
     return true;
   };
 
   const resolveCollision = (a: FruitState, b: FruitState): void => {
-    const ra = FRUITS[a.type].r;
-    const rb = FRUITS[b.type].r;
-    let dx = b.x - a.x;
-    let dy = b.y - a.y;
-    let distance = Math.hypot(dx, dy);
-    const targetDistance = ra + rb;
-
-    if (distance >= targetDistance) return;
-    if (distance === 0) {
-      dx = 0.0001;
-      dy = 0;
-      distance = 0.0001;
-    }
-
-    if (tryMerge(a, b, distance, targetDistance)) return;
-
-    const nx = dx / distance;
-    const ny = dy / distance;
-    const overlap = targetDistance - distance;
-    const push = overlap * 0.5;
-    a.x -= nx * push;
-    a.y -= ny * push;
-    b.x += nx * push;
-    b.y += ny * push;
-
-    const rvx = b.vx - a.vx;
-    const rvy = b.vy - a.vy;
-    const velocityAlongNormal = rvx * nx + rvy * ny;
-    if (velocityAlongNormal > 0) return;
-
-    const impulse = -(1 + 0.18) * velocityAlongNormal * 0.5;
-    a.vx -= impulse * nx;
-    a.vy -= impulse * ny;
-    b.vx += impulse * nx;
-    b.vy += impulse * ny;
+    resolveCollisionPair(a, b, tryMerge);
   };
 
   const stepTransientEffects = (): void => {
