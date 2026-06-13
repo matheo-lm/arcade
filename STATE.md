@@ -2,24 +2,16 @@
 > last updated: 2026-06-13
 
 ## current goal
-i18n createI18n runtime tests complete. Next: mobile touch feedback on game cards.
+Completed i18n runtime tests and mobile touch feedback. Next: Playwright config port confusion.
 
 ## progress
-- [x] loop-kit infrastructure setup complete (initial bootstrap)
-- [x] loop-kit doctrine sync — added missing skills (design, surface-verification), updated SESSION.md (Observe at the surface, Ship/exit criteria), updated AGENTS.md (red flags, Session Ritual, expanded skill descs, loop-kit version check), created `.loop-kit-version` tracking
-- [x] Codebase audit complete (36 items)
-- [x] Bug 1-4: fruit-stacker Google Fonts, fallbackSpriteUrl SVG, number-garden hint/import fixes
-- [x] ES fixes 1-4: translation corrections
-- [x] XSS fix: escapeHtml + wrapping game title/description
-- [x] aria-label fix: localized badges close button
-- [x] Security headers: CSP + Permissions-Policy
-- [x] Laundry list cleanup: 8 stale items moved to done
+- [x] loop-kit doctrine sync, codebase audit, all early bug/ES fixes, security headers, laundry cleanup
 - [x] Fruit Stacker unit tests batch 1+2: 39 game-logic + 4 config tests
-- [x] loop-kit doctrine PR merged (#30)
-- [x] **i18n createI18n runtime tests**: 12 new tests covering t() fallback chain, setLocale(), locale resolution, interface contract — 145 total tests (PR #31 merged)
+- [x] i18n createI18n runtime tests: 12 tests covering t(), setLocale(), fallback chain (PR #31)
+- [x] Mobile touch feedback: tap highlight, sticky hover fix, user-select, touch-callout (PR #32)
 
 ## findings
-- **i18n runtime coverage complete**: `createI18n`, `t()`, `setLocale()`, and fallback chain now tested. All known unit testing gaps closed except Number Garden game.ts and Launcher main.ts.
+- **Laundry list**: 9 items remain (after 2 completed this session).
 - **Test coverage**: 145 total tests (11 files).
-- **Laundry list**: 10 items remain.
+- **Remaining test gaps**: Number Garden game.ts [Critical] and Launcher main.ts [High].
 
